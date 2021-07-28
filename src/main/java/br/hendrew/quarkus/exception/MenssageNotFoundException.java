@@ -1,10 +1,10 @@
 package br.hendrew.quarkus.exception;
 
-public class AlunosNotFoundException extends Exception {
+public class MenssageNotFoundException extends Exception {
 	
 	private static final long serialVersionUID = 1L;
 
-	public AlunosNotFoundException(String message) {
+	public MenssageNotFoundException(String message) {
         super(message);
     }
 }

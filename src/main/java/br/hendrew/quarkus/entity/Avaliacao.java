@@ -9,20 +9,22 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "alunos")
-public class Alunos {
-	
+@Table(name = "avaliacao")
+public class Avaliacao {
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "nome", nullable = false)
+	@Column(name = "descricao", nullable = false)
     @Size(max = 100)
-    private String nome;
-    
-    public Alunos() {
+    private String descricao;
+	
+	@Column(name = "peso")
+	private Double peso;
+	
+	public Avaliacao() {
 	}
-    
 
 	public long getId() {
 		return id;
@@ -32,18 +34,25 @@ public class Alunos {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Double getPeso() {
+		return peso;
+	}
+	
+	public void setPeso(Double peso) {
+		this.peso = peso;
 	}
 
 	@Override
 	public String toString() {
-		return "Alunos [id=" + id + ", nome=" + nome + "]";
+		return "Avaliacao [id=" + id + ", descricao=" + descricao + ", peso=" + peso + "]";
 	}
     
-
 }

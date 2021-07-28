@@ -3,7 +3,6 @@ package br.hendrew.quarkus.controller;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -29,11 +28,9 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 
 import br.hendrew.quarkus.entity.Alunos;
-import br.hendrew.quarkus.exception.AlunosNotFoundException;
+import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.exceptionhandler.ExceptionHandler;
 import br.hendrew.quarkus.service.AlunosService;
-
-
 
 
 @RequestScoped
@@ -50,7 +47,7 @@ public class AlunosController {
 	    }
 	 
 	 @GET
-	    @RolesAllowed({"USER", "ADMIN"})
+	 	@PermitAll
 	    @Operation(summary = "Gets Alunos", description = "Lista todos alunos")
 	    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))))
@@ -59,16 +56,16 @@ public class AlunosController {
 	    }
 	 
 	  @GET
-	    @RolesAllowed({"USER", "ADMIN"})
+	  	@PermitAll
 	    @Path("/{id}")
 	    @Operation(summary = "Gets a aluno", description = "Pesquisa por um ID o Aluno")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))),
-	            @APIResponse(responseCode = "404", description="User not found",
+	            @APIResponse(responseCode = "404", description="Alunos not found",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
 	    })
-	    public Alunos getAluno(@PathParam("id") int id) throws AlunosNotFoundException {
+	    public Alunos getAluno(@PathParam("id") int id) throws MenssageNotFoundException {
 	        return alunosService.getAlunosById(id);
 	    }
 
@@ -82,34 +79,34 @@ public class AlunosController {
 	    }
 
 	    @PUT
-	    @RolesAllowed("ADMIN")
+	    @PermitAll
 	    @Path("/{id}")
 	    @Operation(summary = "Updates um aluno", description = "Atualizar um aluno existente via id")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))),
-	            @APIResponse(responseCode = "404", description="User not found",
+	            @APIResponse(responseCode = "404", description="Alunos not found",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
 	    })
-	    public Alunos updateAluno(@PathParam("id") int id, @Valid AlunosDto alunosDto) throws AlunosNotFoundException {
+	    public Alunos updateAluno(@PathParam("id") int id, @Valid AlunosDto alunosDto) throws MenssageNotFoundException {
 	        return alunosService.updateAlunos(id, alunosDto.toAluno());
 	    }
 
 	    @DELETE
-	    @RolesAllowed("ADMIN")
+	    @PermitAll
 	    @Path("/{id}")
 	    @Operation(summary = "Deletes a aluno", description = "Delete um usuário pelo ID")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "204", description = "Success"),
-	            @APIResponse(responseCode = "404", description="User not found",
+	            @APIResponse(responseCode = "404", description="Alunos not found",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
 	    })
-	    public Response deleteAluno(@PathParam("id") int id) throws AlunosNotFoundException {
+	    public Response deleteAluno(@PathParam("id") int id) throws MenssageNotFoundException {
 	        alunosService.deleteAluno(id);
 	        return Response.status(Response.Status.NO_CONTENT).build();
 	    }
 
-	    @Schema(name="AlunosDTO", description="Alunos representation to create")
+	    @Schema(name="AlunosDTO", description="Representação para Criar um novo Aluno")
 	    public static class AlunosDto {
 
 	        @NotBlank

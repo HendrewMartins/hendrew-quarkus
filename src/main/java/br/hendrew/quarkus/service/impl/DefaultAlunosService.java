@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import br.hendrew.quarkus.entity.Alunos;
-import br.hendrew.quarkus.exception.AlunosNotFoundException;
+import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.repository.AlunosRepository;
 import br.hendrew.quarkus.service.AlunosService;
 
@@ -22,8 +22,8 @@ public class DefaultAlunosService implements AlunosService {
     }
 
     @Override
-    public Alunos getAlunosById(long id) throws AlunosNotFoundException {
-        return alunosRepository.findByIdOptional(id).orElseThrow(() -> new AlunosNotFoundException("There Alunos doesn't exist"));
+    public Alunos getAlunosById(long id) throws MenssageNotFoundException {
+        return alunosRepository.findByIdOptional(id).orElseThrow(() -> new MenssageNotFoundException("There Alunos doesn't exist"));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class DefaultAlunosService implements AlunosService {
 
     @Transactional
     @Override
-    public Alunos updateAlunos(long id, Alunos alunos) throws AlunosNotFoundException {
+    public Alunos updateAlunos(long id, Alunos alunos) throws MenssageNotFoundException {
         Alunos existingAluno = getAlunosById(id);
         existingAluno.setNome(alunos.getNome());
         return existingAluno;
@@ -48,7 +48,7 @@ public class DefaultAlunosService implements AlunosService {
 
     @Transactional
     @Override
-    public void deleteAluno(long id) throws AlunosNotFoundException {
+    public void deleteAluno(long id) throws MenssageNotFoundException {
         alunosRepository.delete(getAlunosById(id));
     }
 }

@@ -41,8 +41,9 @@
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-hibernate-orm</artifactId>
     </dependency>
+    <dependency>
         <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-rum</artifactId>
+        <artifactId>quarkus-run</artifactId>
     </dependency>
     <dependency>
    		 <groupId>io.quarkus</groupId>

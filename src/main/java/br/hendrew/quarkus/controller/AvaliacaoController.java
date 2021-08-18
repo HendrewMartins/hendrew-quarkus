@@ -45,7 +45,7 @@ public class AvaliacaoController {
 	 
 	 @GET
 	 	@PermitAll
-	    @Operation(summary = "Gets Avaliacao", description = "Lista todas Avaliacao")
+	    @Operation(summary = "Listar Avaliacao", description = "Lista todas Avaliacao")
 	    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))))
 	    public List<Avaliacao> getAvaliacaos() {
@@ -55,7 +55,7 @@ public class AvaliacaoController {
 	  @GET
 	  	@PermitAll
 	    @Path("/{id}")
-	    @Operation(summary = "Gets a avaliacao", description = "Pesquisa por um ID a Avaliacao")
+	    @Operation(summary = "Pegar a avaliacao", description = "Pesquisa por um ID a Avaliacao")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))),
@@ -68,7 +68,7 @@ public class AvaliacaoController {
 
 	    @POST
 	    @PermitAll
-	    @Operation(summary = "Adds a Avaliacao", description = "Create um Avaliacao e persists no database")
+	    @Operation(summary = "Adiconar a Avaliacao", description = "Criar uma Avaliacao e persistir no banco")
 	    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))))
 	    public Avaliacao createAvaliacao(@Valid AvaliacaoDto avaliacaoDto) {
@@ -78,7 +78,7 @@ public class AvaliacaoController {
 	    @PUT
 	    @PermitAll
 	    @Path("/{id}")
-	    @Operation(summary = "Updates um Avaliacao", description = "Atualizar um Avaliacao existente via id")
+	    @Operation(summary = "Atualizar uma Avaliacao", description = "Atualizar um Avaliacao existente via id")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))),
@@ -92,7 +92,7 @@ public class AvaliacaoController {
 	    @DELETE
 	    @PermitAll
 	    @Path("/{id}")
-	    @Operation(summary = "Deletes a Avaliacao", description = "Delete um Avaliacao pelo ID")
+	    @Operation(summary = "Apagar a Avaliacao", description = "Deletar uma Avaliacao pelo ID")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "204", description = "Success"),
 	            @APIResponse(responseCode = "404", description="Avaliacao not found",
@@ -103,7 +103,7 @@ public class AvaliacaoController {
 	        return Response.status(Response.Status.NO_CONTENT).build();
 	    }
 
-	    @Schema(name="AvaliacaoDTO", description="Representação para Criar um novo Avaliacao")
+	    @Schema(name="AvaliacaoDTO", description="DTO para Criar um novo Avaliacao")
 	    public static class AvaliacaoDto {
 
 	        @NotBlank

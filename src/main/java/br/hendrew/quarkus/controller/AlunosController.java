@@ -48,7 +48,7 @@ public class AlunosController {
 	 
 	 @GET
 	 	@PermitAll
-	    @Operation(summary = "Gets Alunos", description = "Lista todos alunos")
+	    @Operation(summary = "Listar Alunos", description = "Lista todos alunos")
 	    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))))
 	    public List<Alunos> getAlunos() {
@@ -58,7 +58,7 @@ public class AlunosController {
 	  @GET
 	  	@PermitAll
 	    @Path("/{id}")
-	    @Operation(summary = "Gets a aluno", description = "Pesquisa por um ID o Aluno")
+	    @Operation(summary = "Pegar aluno", description = "Pesquisa por um ID o Aluno")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))),
@@ -71,7 +71,7 @@ public class AlunosController {
 
 	    @POST
 	    @PermitAll
-	    @Operation(summary = "Adds a alunos", description = "Create um aluno e persists no database")
+	    @Operation(summary = "Adicionar alunos", description = "Criar um novo aluno e persistir no banco")
 	    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))))
 	    public Alunos createAluno(@Valid AlunosDto alunosDto) {
@@ -81,7 +81,7 @@ public class AlunosController {
 	    @PUT
 	    @PermitAll
 	    @Path("/{id}")
-	    @Operation(summary = "Updates um aluno", description = "Atualizar um aluno existente via id")
+	    @Operation(summary = "Atualizar um aluno", description = "Atualizar um aluno existente via id")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))),
@@ -95,7 +95,7 @@ public class AlunosController {
 	    @DELETE
 	    @PermitAll
 	    @Path("/{id}")
-	    @Operation(summary = "Deletes a aluno", description = "Delete um usuário pelo ID")
+	    @Operation(summary = "Apagar a aluno", description = "Apagar um usuário pelo ID")
 	    @APIResponses(value = {
 	            @APIResponse(responseCode = "204", description = "Success"),
 	            @APIResponse(responseCode = "404", description="Alunos not found",
@@ -106,15 +106,13 @@ public class AlunosController {
 	        return Response.status(Response.Status.NO_CONTENT).build();
 	    }
 
-	    @Schema(name="AlunosDTO", description="Representação para Criar um novo Aluno")
+	    @Schema(name="AlunosDTO", description="DTO para Criar um novo Aluno")
 	    public static class AlunosDto {
 
 	        @NotBlank
 	        @Schema(title = "Nome", required = true)
 	        private String nome;
-
-	        
-	        	        
+  	        
 	        public String getNome() {
 	            return nome;
 	        }

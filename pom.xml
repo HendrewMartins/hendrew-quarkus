@@ -41,6 +41,9 @@
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-hibernate-orm</artifactId>
     </dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-rum</artifactId>
+    </dependency>
     <dependency>
    		 <groupId>io.quarkus</groupId>
    		 <artifactId>quarkus-hibernate-search-orm-elasticsearch</artifactId>

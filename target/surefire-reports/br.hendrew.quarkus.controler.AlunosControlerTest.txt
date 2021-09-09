@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: br.hendrew.quarkus.controler.AlunosControlerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 34.941 s <<< FAILURE! - in br.hendrew.quarkus.controler.AlunosControlerTest
+br.hendrew.quarkus.controler.AlunosControlerTest.testHelloEndpoint  Time elapsed: 4.298 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+Expected status code <200> but was <500>.
+
+	at br.hendrew.quarkus.controler.AlunosControlerTest.testHelloEndpoint(AlunosControlerTest.java:17)
+

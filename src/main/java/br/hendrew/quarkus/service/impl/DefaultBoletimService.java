@@ -51,7 +51,7 @@ public class DefaultBoletimService implements BoletimService {
 			Boletim boletim = new Boletim();
 			boletim.setDesc_Aluno(alunos.get(i).getNome());
 
-			List<Bimestre> bimestre = servicebimestre.getBimestrePorAluno(alunos.get(i));
+			List<Bimestre> bimestre = servicebimestre.getBimestrePorAluno(alunos.get(i).getId());
 
 			for (int a = 0; a < bimestre.size(); a++) {
 				if (ano == bimestre.get(a).getAno()) {

@@ -25,6 +25,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import br.hendrew.quarkus.entity.Avaliacao;
+import br.hendrew.quarkus.entity.Avaliacao_Auxiliar;
 import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.exceptionhandler.ExceptionHandler;
 import br.hendrew.quarkus.service.AvaliacaoService;
@@ -43,12 +44,12 @@ public class AvaliacaoController {
 	        this.avaliacaoService = avaliacaoService;
 	    }
 	 
-	 @GET
+	   @GET
 	 	@PermitAll
 	    @Operation(summary = "Listar Avaliacao", description = "Lista todas Avaliacao")
 	    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
 	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))))
-	    public List<Avaliacao> getAvaliacaos() {
+	    public List<Avaliacao_Auxiliar> getAvaliacaos() {
 	        return avaliacaoService.getAllAvaliacao();
 	    }
 	 

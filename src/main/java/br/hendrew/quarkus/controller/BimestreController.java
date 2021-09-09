@@ -6,7 +6,6 @@ import javax.annotation.security.PermitAll;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +14,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -24,10 +22,13 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
-import br.hendrew.quarkus.entity.Alunos;
+import br.hendrew.quarkus.convertion.BimestreConvertion;
 import br.hendrew.quarkus.entity.Bimestre;
+import br.hendrew.quarkus.entity.Bimestre_Angular;
+import br.hendrew.quarkus.entity.Bimestre_Auxiliar;
 import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.exceptionhandler.ExceptionHandler;
+import br.hendrew.quarkus.service.AlunosService;
 import br.hendrew.quarkus.service.BimestreService;
 
 @RequestScoped
@@ -35,92 +36,107 @@ import br.hendrew.quarkus.service.BimestreService;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class BimestreController {
-	
-	private final BimestreService bimestreService;
 
-	@Inject
-    public BimestreController(BimestreService bimestreService) {
+    private final BimestreService bimestreService;
+    private final AlunosService alunosService;
+    BimestreConvertion convertion;
+
+    @Inject
+    public BimestreController(BimestreService bimestreService, AlunosService alunosService) {
         this.bimestreService = bimestreService;
+        this.alunosService = alunosService;
     }
- 
- @GET
- 	@PermitAll
+
+    @GET
+    @PermitAll
     @Operation(summary = "Listar Bimestre", description = "Lista todas Bimestre")
-    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))))
-    public List<Bimestre> getBimestre() {
-        return bimestreService.getAllBimestre();
+    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))))
+    public List<Bimestre_Auxiliar> getBimestre() {
+        return bimestreService.getAllBimestreNmAluno();
     }
- 
-  @GET
-  	@PermitAll
-    @Path("/{id}")
+
+    @GET
+    @PermitAll
+    @Path("/id/{id}")
     @Operation(summary = "Pegar Bimestre", description = "Pesquisa por um ID a Bimestre")
     @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "Success",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))),
-            @APIResponse(responseCode = "404", description="Bimestre not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-    })
-    public Bimestre getBimestre(@PathParam("id") int id) throws MenssageNotFoundException {
-        return bimestreService.getBimestreById(id);
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))),
+            @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+    public Bimestre_Angular getBimestre(@PathParam("id") int id) throws MenssageNotFoundException {
+        return bimestreService.getBimestreAngById(id);
+    }
+
+    @GET
+    @PermitAll
+    @Path("/aluno/{id}")
+    @Operation(summary = "Pegar Bimestre por Aluno", description = "Pesquisa por um ID a Bimestre")
+    @APIResponses(value = {
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))),
+            @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+    public List<Bimestre_Angular> getAlunoBimestre(@PathParam("id") int id) throws MenssageNotFoundException {
+        return bimestreService.getBimestrePorAluno_Angular(id);
+    }
+
+    @GET
+    @PermitAll
+    @Path("/nota/aluno/{id}")
+    @Operation(summary = "Pegar Bimestre por Aluno", description = "Pesquisa por um ID a Bimestre")
+    @APIResponses(value = {
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))),
+            @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+    public List<Bimestre_Auxiliar> getNotaAlunoBimestre(@PathParam("id") int id) throws MenssageNotFoundException {
+        return bimestreService.getNotaBimestrePorAluno(id);
     }
 
     @POST
     @PermitAll
+    @Path("/save")
     @Operation(summary = "Adicionar a Bimestre", description = "Create um Bimestre e persistir no banco")
-    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))))
-    public Bimestre createBimestre(@Valid BimestreDto bimestreDto) {
-        return bimestreService.saveBimestre(bimestreDto.toBimestre());
+    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))))
+    public Bimestre createBimestre(@Valid BimestreDto bimestreDto) throws MenssageNotFoundException {
+        return bimestreService.saveBimestre(bimestreDto.toBimestre(),
+                alunosService.getAlunosById(bimestreDto.getId_Aluno()));
     }
 
     @PUT
     @PermitAll
-    @Path("/{id}")
+    @Path("/edit/{id}")
     @Operation(summary = "Atualizar um Bimestre", description = "Atualizar um Bimestre existente via id")
     @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "Success",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))),
-            @APIResponse(responseCode = "404", description="Bimestre not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-    })
-    public Bimestre updateBimestre(@PathParam("id") int id, @Valid BimestreDto bimestreDto) throws MenssageNotFoundException {
-        return bimestreService.updateBimestre(id, bimestreDto.toBimestre());
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))),
+            @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+    public Bimestre updateBimestre(@PathParam("id") int id, @Valid BimestreDto bimestreDto)
+            throws MenssageNotFoundException {
+        return bimestreService.updateBimestre(id, bimestreDto.toBimestre(),
+                alunosService.getAlunosById(bimestreDto.getId_Aluno()));
     }
 
     @DELETE
     @PermitAll
-    @Path("/{id}")
+    @Path("/delete/{id}")
     @Operation(summary = "Apagar Bimestre", description = "Apagar um Bimestre pelo ID")
-    @APIResponses(value = {
-            @APIResponse(responseCode = "204", description = "Success"),
-            @APIResponse(responseCode = "404", description="Bimestre not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-    })
-    public Response deleteBimestre(@PathParam("id") int id) throws MenssageNotFoundException {
+    @APIResponses(value = { @APIResponse(responseCode = "204", description = "Success"),
+            @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+    public Boolean deleteBimestre(@PathParam("id") int id) throws MenssageNotFoundException {
+        
         bimestreService.deleteBimestre(id);
-        return Response.status(Response.Status.NO_CONTENT).build();
+        return true;
     }
 
-    @Schema(name="BimestreDTO", description="DTO para Criar um novo Bimestre")
+    @Schema(name = "BimestreDTO", description = "DTO para Criar um novo Bimestre")
     public static class BimestreDto {
 
-        @NotBlank
-        @Schema(title = "Bimestre", required = true)
+        @Schema(title = "bimestre", required = true)
         private long bimestre;
-        
-        @NotBlank
-        @Schema(title = "Ano", required = true)
+
+        @Schema(title = "ano", required = true)
         private long ano;
-    	
-        @NotBlank
-        @Schema(title = "Faltas", required = true)
+
+        @Schema(title = "faltas", required = true)
         private long faltas;
-        
-        @NotBlank
-        @Schema(title = "Aluno", required = true)
-        private Alunos alunos;
+
+        @Schema(title = "id_Aluno", required = true)
+        private long id_Aluno;
 
         public long getBimestre() {
             return bimestre;
@@ -129,7 +145,7 @@ public class BimestreController {
         public void setBimestre(long bimestre) {
             this.bimestre = bimestre;
         }
-        
+
         public long getAno() {
             return ano;
         }
@@ -137,7 +153,7 @@ public class BimestreController {
         public void setAno(long ano) {
             this.ano = ano;
         }
-        
+
         public long getFaltas() {
             return faltas;
         }
@@ -145,24 +161,23 @@ public class BimestreController {
         public void setFaltas(long faltas) {
             this.faltas = faltas;
         }
-        
-        public Alunos getAlunos() {
-            return alunos;
+
+        public long getId_Aluno() {
+            return id_Aluno;
         }
 
-        public void setAlunos(Alunos alunos) {
-            this.alunos = alunos;
+        public void setId_Aluno(long id_Aluno) {
+            this.id_Aluno = id_Aluno;
         }
-       
-        public Bimestre toBimestre() {
-        	Bimestre bimestre = new Bimestre();
-            bimestre.setBimestre(this.bimestre);
-            bimestre.setAno(this.ano);
-            bimestre.setFaltas(this.faltas);
-            bimestre.setAlunos(this.alunos);
-            return bimestre;
+
+        public Bimestre_Angular toBimestre() {
+            Bimestre_Angular bimestre_angular = new Bimestre_Angular();
+            bimestre_angular.setBimestre(this.bimestre);
+            bimestre_angular.setAno(this.ano);
+            bimestre_angular.setFaltas(this.faltas);
+            bimestre_angular.setId_Aluno(this.id_Aluno);
+            return bimestre_angular;
         }
     }
-
 
 }

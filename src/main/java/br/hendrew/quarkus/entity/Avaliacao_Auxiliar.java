@@ -1,30 +1,15 @@
 package br.hendrew.quarkus.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
+public class Avaliacao_Auxiliar {
 
-@Entity
-@Table(name = "avaliacao")
-public class Avaliacao {
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-	@Column(name = "descricao", nullable = false)
-    @Size(max = 100)
     private String descricao;
 	
-	@Column(name = "peso")
 	private Double peso;
 	
 	
-	public Avaliacao() {
+	public Avaliacao_Auxiliar() {
 	}
 
 	public long getId() {
@@ -55,5 +40,4 @@ public class Avaliacao {
 	public String toString() {
 		return "Avaliacao [id=" + id + ", descricao=" + descricao + ", peso=" + peso + "]";
 	}
-    
 }

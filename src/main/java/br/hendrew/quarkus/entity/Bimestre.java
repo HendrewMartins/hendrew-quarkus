@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Bimestre {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 	
 	@Column(name = "bimestre", nullable = false)

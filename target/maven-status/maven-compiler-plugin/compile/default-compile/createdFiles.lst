@@ -1,9 +1,0 @@
-br\hendrew\quarkus\entity\Nota_Angular.class
-br\hendrew\quarkus\convertion\NotaConvertion.class
-br\hendrew\quarkus\repository\BoletimRepository.class
-META-INF\panache-archive.marker
-br\hendrew\quarkus\entity\Bimestre_Auxiliar.class
-br\hendrew\quarkus\entity\Nota_Auxiliar.class
-br\hendrew\quarkus\convertion\BimestreConvertion.class
-br\hendrew\quarkus\entity\Bimestre_Angular.class
-br\hendrew\quarkus\entity\Avaliacao_Auxiliar.class

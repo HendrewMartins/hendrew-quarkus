@@ -1,6 +1,7 @@
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\service\AvaliacaoService.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\entity\Avaliacao_Auxiliar.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\service\impl\DefaultNotaService.java
+C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\entity\Alunos_Auxiliar.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\repository\NotaRepository.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\exception\MenssageNotFoundException.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\entity\Nota.java

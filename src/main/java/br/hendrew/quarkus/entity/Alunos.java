@@ -1,5 +1,7 @@
 package br.hendrew.quarkus.entity;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +21,9 @@ public class Alunos {
     @Column(name = "nome", nullable = false)
     @Size(max = 100)
     private String nome;
+
+	@Column(name = "dt_nasc", nullable = false)
+    private Date dt_nasc;
     
     public Alunos() {
 	}
@@ -40,9 +45,17 @@ public class Alunos {
 		this.nome = nome;
 	}
 
+	public Date getDt_nasc(){
+		return dt_nasc;
+	}
+
+	public void setDt_nasc(Date dt_nasc){
+		this.dt_nasc = dt_nasc;
+	}
+
 	@Override
 	public String toString() {
-		return "Alunos [id=" + id + ", nome=" + nome + "]";
+		return "Alunos [id=" + id + ", nome=" + nome +", dt_nasc=" + dt_nasc + "]";
 	}
     
 

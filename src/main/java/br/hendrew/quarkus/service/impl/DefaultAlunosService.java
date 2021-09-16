@@ -36,6 +36,7 @@ public class DefaultAlunosService implements AlunosService {
     public Alunos updateAlunos(long id, Alunos alunos) throws MenssageNotFoundException {
         Alunos existingAluno = getAlunosById(id);
         existingAluno.setNome(alunos.getNome());
+        existingAluno.setDt_nasc(alunos.getDt_nasc());
         return existingAluno;
     }
 

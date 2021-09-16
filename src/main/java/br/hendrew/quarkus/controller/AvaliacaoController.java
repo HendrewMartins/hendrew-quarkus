@@ -30,114 +30,102 @@ import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.exceptionhandler.ExceptionHandler;
 import br.hendrew.quarkus.service.AvaliacaoService;
 
-
 @RequestScoped
 @Path("/api/avaliacao")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AvaliacaoController {
-	
+
 	private final AvaliacaoService avaliacaoService;
-	
-	 @Inject
-	    public AvaliacaoController(AvaliacaoService avaliacaoService) {
-	        this.avaliacaoService = avaliacaoService;
-	    }
-	 
-	   @GET
-	 	@PermitAll
-	    @Operation(summary = "Listar Avaliacao", description = "Lista todas Avaliacao")
-	    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
-	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))))
-	    public List<Avaliacao_Auxiliar> getAvaliacaos() {
-	        return avaliacaoService.getAllAvaliacao();
-	    }
-	 
-	  @GET
-	  	@PermitAll
-	    @Path("/{id}")
-	    @Operation(summary = "Pegar a avaliacao", description = "Pesquisa por um ID a Avaliacao")
-	    @APIResponses(value = {
-	            @APIResponse(responseCode = "200", description = "Success",
-	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))),
-	            @APIResponse(responseCode = "404", description="Avaliacao not found",
-	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-	    })
-	    public Avaliacao getAvaliacao(@PathParam("id") int id) throws MenssageNotFoundException {
-	        return avaliacaoService.getAvaliacaoById(id);
-	    }
 
-	    @POST
-	    @PermitAll
-	    @Operation(summary = "Adiconar a Avaliacao", description = "Criar uma Avaliacao e persistir no banco")
-	    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
-	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))))
-	    public Avaliacao createAvaliacao(@Valid AvaliacaoDto avaliacaoDto) {
-	        return avaliacaoService.saveAvaliacao(avaliacaoDto.toAvaliacao());
-	    }
+	@Inject
+	public AvaliacaoController(AvaliacaoService avaliacaoService) {
+		this.avaliacaoService = avaliacaoService;
+	}
 
-	    @PUT
-	    @PermitAll
-	    @Path("/{id}")
-	    @Operation(summary = "Atualizar uma Avaliacao", description = "Atualizar um Avaliacao existente via id")
-	    @APIResponses(value = {
-	            @APIResponse(responseCode = "200", description = "Success",
-	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))),
-	            @APIResponse(responseCode = "404", description="Avaliacao not found",
-	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-	    })
-	    public Avaliacao updateAvaliacao(@PathParam("id") int id, @Valid AvaliacaoDto avaliacaoDto) throws MenssageNotFoundException {
-	        return avaliacaoService.updateAvaliacao(id, avaliacaoDto.toAvaliacao());
-	    }
+	@GET
+	@PermitAll
+	@Operation(summary = "Listar Avaliacao", description = "Lista todas Avaliacao")
+	@APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))))
+	public List<Avaliacao_Auxiliar> getAvaliacaos() {
+		return avaliacaoService.getAllAvaliacao();
+	}
 
-	    @DELETE
-	    @PermitAll
-	    @Path("/{id}")
-	    @Operation(summary = "Apagar a Avaliacao", description = "Deletar uma Avaliacao pelo ID")
-	    @APIResponses(value = {
-	            @APIResponse(responseCode = "204", description = "Success"),
-	            @APIResponse(responseCode = "404", description="Avaliacao not found",
-	                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-	    })
-	    public Response deleteAvaliacao(@PathParam("id") int id) throws MenssageNotFoundException {
-	        avaliacaoService.deleteAvaliacao(id);
-	        return Response.status(Response.Status.NO_CONTENT).build();
-	    }
+	@GET
+	@PermitAll
+	@Path("/{id}")
+	@Operation(summary = "Pegar a avaliacao", description = "Pesquisa por um ID a Avaliacao")
+	@APIResponses(value = {
+			@APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))),
+			@APIResponse(responseCode = "404", description = "Avaliacao not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+	public Avaliacao getAvaliacao(@PathParam("id") int id) throws MenssageNotFoundException {
+		return avaliacaoService.getAvaliacaoById(id);
+	}
 
-	    @Schema(name="AvaliacaoDTO", description="DTO para Criar um novo Avaliacao")
-	    public static class AvaliacaoDto {
+	@POST
+	@PermitAll
+	@Operation(summary = "Adiconar a Avaliacao", description = "Criar uma Avaliacao e persistir no banco")
+	@APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))))
+	public Avaliacao createAvaliacao(@Valid AvaliacaoDto avaliacaoDto) {
+		return avaliacaoService.saveAvaliacao(avaliacaoDto.toAvaliacao());
+	}
 
-	        @NotBlank
-	        @Schema(title = "Descrição", required = true)
-	        private String descricao;
-	    	
-	        @NotBlank
-	        @Schema(title = "Peso", required = true)
-	        private Double peso;
-	    	      
-	        public String getDescricao() {
-	            return descricao;
-	        }
+	@PUT
+	@PermitAll
+	@Path("/{id}")
+	@Operation(summary = "Atualizar uma Avaliacao", description = "Atualizar um Avaliacao existente via id")
+	@APIResponses(value = {
+			@APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Avaliacao.class))),
+			@APIResponse(responseCode = "404", description = "Avaliacao not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+	public Avaliacao updateAvaliacao(@PathParam("id") int id, @Valid AvaliacaoDto avaliacaoDto)
+			throws MenssageNotFoundException {
+		return avaliacaoService.updateAvaliacao(id, avaliacaoDto.toAvaliacao());
+	}
 
-	        public void setDescricao(String descricao) {
-	            this.descricao = descricao;
-	        }
-	        
-	        public Double getPeso() {
-	            return peso;
-	        }
+	@DELETE
+	@PermitAll
+	@Path("/{id}")
+	@Operation(summary = "Apagar a Avaliacao", description = "Deletar uma Avaliacao pelo ID")
+	@APIResponses(value = { @APIResponse(responseCode = "204", description = "Success"),
+			@APIResponse(responseCode = "404", description = "Avaliacao not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+	public Response deleteAvaliacao(@PathParam("id") int id) throws MenssageNotFoundException {
+		avaliacaoService.deleteAvaliacao(id);
+		return Response.status(Response.Status.NO_CONTENT).build();
+	}
 
-	        public void setPeso(Double peso) {
-	            this.peso = peso;
-	        }
+	@Schema(name = "AvaliacaoDTO", description = "DTO para Criar um novo Avaliacao")
+	public static class AvaliacaoDto {
 
-	        public Avaliacao toAvaliacao() {
-	            Avaliacao avaliacao = new Avaliacao();
-	            avaliacao.setDescricao(descricao);
-	            avaliacao.setPeso(peso);
-	            return avaliacao;
-	        }
-	    }
+		@NotBlank
+		@Schema(title = "Descrição", required = true)
+		private String descricao;
 
+		@NotBlank
+		@Schema(title = "Peso", required = true)
+		private Double peso;
+
+		public String getDescricao() {
+			return descricao;
+		}
+
+		public void setDescricao(String descricao) {
+			this.descricao = descricao;
+		}
+
+		public Double getPeso() {
+			return peso;
+		}
+
+		public void setPeso(Double peso) {
+			this.peso = peso;
+		}
+
+		public Avaliacao toAvaliacao() {
+			Avaliacao avaliacao = new Avaliacao();
+			avaliacao.setDescricao(descricao);
+			avaliacao.setPeso(peso);
+			return avaliacao;
+		}
+	}
 
 }

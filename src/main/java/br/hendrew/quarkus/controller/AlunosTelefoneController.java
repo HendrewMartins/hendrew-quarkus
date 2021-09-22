@@ -55,7 +55,7 @@ public class AlunosTelefoneController {
     @Path("/save/{id}")
     @Operation(summary = "Adicionar a Telefones", description = "Create um Telefone e persistir no banco")
     @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AlunosTelefone_Auxiliar.class))))
-    public AlunosTelefone createEndereco(@PathParam("id") int id, @Valid TelefoneDto telefoneDto)
+    public AlunosTelefone createTelefone(@PathParam("id") int id, @Valid TelefoneDto telefoneDto)
             throws MenssageNotFoundException {
         return telefoneService.saveTelefone(telefoneDto.toTelefone(), id);
     }

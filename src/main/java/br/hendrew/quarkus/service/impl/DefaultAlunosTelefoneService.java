@@ -3,6 +3,7 @@ package br.hendrew.quarkus.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -15,6 +16,7 @@ import br.hendrew.quarkus.repository.AlunosRepository;
 import br.hendrew.quarkus.repository.AlunosTelefoneRepository;
 import br.hendrew.quarkus.service.AlunosTelefoneService;
 
+@ApplicationScoped
 public class DefaultAlunosTelefoneService implements AlunosTelefoneService {
 
     private final AlunosTelefoneRepository telefoneRepository;

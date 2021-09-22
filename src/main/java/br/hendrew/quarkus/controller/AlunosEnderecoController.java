@@ -57,7 +57,7 @@ public class AlunosEnderecoController {
     @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AlunosEndereco_Auxiliar.class))))
     public AlunosEndereco createEndereco(@PathParam("id") int id, @Valid EnderecoDto enderecoDto)
             throws MenssageNotFoundException {
-        return enderecoService.saveEndereco(enderecoDto.toEndereco(), id);
+        return null; //enderecoService.saveEndereco(enderecoDto.toEndereco(), id);
     }
 
     @Schema(name = "EnderecoDTO", description = "DTO para Criar um novo Endereco")

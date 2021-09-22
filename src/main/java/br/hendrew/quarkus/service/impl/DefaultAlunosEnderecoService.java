@@ -30,30 +30,6 @@ public class DefaultAlunosEnderecoService implements AlunosEnderecoService {
     }
 
     @Override
-    public void deleteEndereco(long id) throws MenssageNotFoundException {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public List<AlunosEndereco> getAllEndereco() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public AlunosEndereco getEnderecoAngById(long id) throws MenssageNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public AlunosEndereco getEnderecoById(long id) throws MenssageNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public List<AlunosEndereco_Auxiliar> getEnderecoPorAluno(long id) throws MenssageNotFoundException {
         Alunos aluno = new Alunos();
         aluno = alunosRepository.findByIdOptional(id)
@@ -69,36 +45,26 @@ public class DefaultAlunosEnderecoService implements AlunosEnderecoService {
         return enderecoAux;
     }
 
-    @Override
-    public List<AlunosEndereco> getEnderecoPorAluno_Angular(long id) throws MenssageNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
+
+    @Transactional
     @Override
-    public List<AlunosEndereco> getNotaBimestrePorAluno(long id) throws MenssageNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+    public void saveEndereco(AlunosEndereco_Auxiliar alunosenderecoaux, Alunos alunos) throws MenssageNotFoundException {
+        AlunosEndereco endereco = convertion.alunosEnderecoConvertion(alunosenderecoaux, alunos);  
+        enderecoRepository.persistAndFlush(endereco);
     }
 
     @Transactional
     @Override
-    public AlunosEndereco saveEndereco(AlunosEndereco_Auxiliar alunosenderecoaux, long alunos) throws MenssageNotFoundException {
-        
-        Alunos aluno = alunosRepository.findByIdOptional(alunos)
+    public void deleteEnderecoAluno(long id) throws MenssageNotFoundException {
+        Alunos aluno = new Alunos();
+        aluno = alunosRepository.findByIdOptional(id)
                 .orElseThrow(() -> new MenssageNotFoundException("There Aluno doesn't exist"));
-
-        AlunosEndereco endereco = convertion.alunosEnderecoConvertion(alunosenderecoaux, aluno);
+        List<AlunosEndereco> endereco = enderecoRepository.findByAlunos(aluno);
         
-        enderecoRepository.persistAndFlush(endereco);
-        return endereco;
-    }
-
-    @Override
-    public AlunosEndereco updateEndereco(long id, AlunosEndereco alunosendereco, Alunos alunos)
-            throws MenssageNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        for(int x=0; x < endereco.size(); x++){
+            enderecoRepository.delete(endereco.get(x));
+        }
     }
     
 }

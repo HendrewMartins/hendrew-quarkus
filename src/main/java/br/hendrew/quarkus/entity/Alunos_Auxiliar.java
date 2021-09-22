@@ -1,5 +1,7 @@
 package br.hendrew.quarkus.entity;
 
+import java.util.List;
+
 public class Alunos_Auxiliar {
    
     private long id;
@@ -18,7 +20,10 @@ public class Alunos_Auxiliar {
 
     private String cpf;
 
-    
+	private List<AlunosEndereco_Auxiliar> alunos_endereco;
+
+	private List<AlunosTelefone_Auxiliar> alunos_telefone;
+
     public Alunos_Auxiliar() {
 	}
     
@@ -95,6 +100,25 @@ public class Alunos_Auxiliar {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public List<AlunosEndereco_Auxiliar> getAlunos_endereco() {
+		return alunos_endereco;
+	}
+
+
+	public void setAlunos_endereco(List<AlunosEndereco_Auxiliar> alunos_endereco) {
+		this.alunos_endereco = alunos_endereco;
+	}
+
+
+	public List<AlunosTelefone_Auxiliar> getAlunos_telefone() {
+		return alunos_telefone;
+	}
+
+
+	public void setAlunos_telefone(List<AlunosTelefone_Auxiliar> alunos_telefone) {
+		this.alunos_telefone = alunos_telefone;
 	}
 
 

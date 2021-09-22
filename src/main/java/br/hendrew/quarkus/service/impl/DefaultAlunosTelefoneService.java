@@ -49,15 +49,23 @@ public class DefaultAlunosTelefoneService implements AlunosTelefoneService {
 
     @Transactional
     @Override
-    public AlunosTelefone saveTelefone(AlunosTelefone_Auxiliar alunostelefoneaux, long alunos)
+    public void saveTelefone(AlunosTelefone_Auxiliar alunostelefoneaux, Alunos alunos)
             throws MenssageNotFoundException {
-                Alunos aluno = alunosRepository.findByIdOptional(alunos)
-                .orElseThrow(() -> new MenssageNotFoundException("There Aluno doesn't exist"));
-
-        AlunosTelefone telefone = convertion.alunosEnderecoConvertion(alunostelefoneaux, aluno);
-        
+        AlunosTelefone telefone = convertion.alunosEnderecoConvertion(alunostelefoneaux, alunos);
         telefoneRepository.persistAndFlush(telefone);
-        return telefone;
+    }
+
+    @Transactional
+    @Override
+    public void deleteTelefoneAluno(long id) throws MenssageNotFoundException {
+        Alunos aluno = new Alunos();
+        aluno = alunosRepository.findByIdOptional(id)
+                .orElseThrow(() -> new MenssageNotFoundException("There Aluno doesn't exist"));
+        List<AlunosTelefone> telefone = telefoneRepository.findByAlunos(aluno);
+        
+        for(int x=0; x < telefone.size(); x++){
+            telefoneRepository.delete(telefone.get(x));
+        }
     }
 
 }

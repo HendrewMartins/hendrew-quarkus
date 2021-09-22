@@ -26,10 +26,14 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import br.hendrew.quarkus.entity.Alunos;
+import br.hendrew.quarkus.entity.AlunosEndereco_Auxiliar;
+import br.hendrew.quarkus.entity.AlunosTelefone_Auxiliar;
 import br.hendrew.quarkus.entity.Alunos_Auxiliar;
 import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.exceptionhandler.ExceptionHandler;
+import br.hendrew.quarkus.service.AlunosEnderecoService;
 import br.hendrew.quarkus.service.AlunosService;
+import br.hendrew.quarkus.service.AlunosTelefoneService;
 
 @RequestScoped
 @Path("/api/alunos")
@@ -38,10 +42,16 @@ import br.hendrew.quarkus.service.AlunosService;
 public class AlunosController {
 
 	private final AlunosService alunosService;
+	private final AlunosEnderecoService enderecoService;
+	private final AlunosTelefoneService telefoneService;
 
 	@Inject
-	public AlunosController(AlunosService alunosService) {
+	public AlunosController(AlunosService alunosService, AlunosEnderecoService enderecoService,
+			AlunosTelefoneService telefoneService) {
 		this.alunosService = alunosService;
+		this.enderecoService = enderecoService;
+		this.telefoneService = telefoneService;
+
 	}
 
 	@GET
@@ -89,6 +99,8 @@ public class AlunosController {
 		aluno_aux.setNm_mae(aluno.getNm_mae());
 		aluno_aux.setNm_pai(aluno.getNm_pai());
 		aluno_aux.setRg_aluno(aluno.getRg_aluno());
+		aluno_aux.setAlunos_endereco(enderecoService.getEnderecoPorAluno(aluno.getId()));
+		aluno_aux.setAlunos_telefone(telefoneService.getTelefonePorAluno(aluno.getId()));
 
 		return aluno_aux;
 	}
@@ -98,7 +110,7 @@ public class AlunosController {
 	@Path("/nome/{nome}")
 	@Operation(summary = "Pegar aluno", description = "Pesquisa por um Nome do Aluno")
 	@APIResponses(value = {
-			@APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))),
+			@APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos_Auxiliar.class))),
 			@APIResponse(responseCode = "404", description = "Alunos not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
 	public List<Alunos_Auxiliar> getAlunoData(@PathParam("nome") String nome) throws MenssageNotFoundException {
 		List<Alunos_Auxiliar> lista = new ArrayList<Alunos_Auxiliar>();
@@ -129,6 +141,31 @@ public class AlunosController {
 	public Alunos_Auxiliar createAluno(@Valid AlunosDto alunosDto) {
 		Alunos aluno = alunosService.saveAlunos(alunosDto.toAluno());
 
+		// grava os endereco
+		if (alunosDto.alunos_endereco != null) {
+			for (int x = 0; x < alunosDto.alunos_endereco.size(); x++) {
+				AlunosEndereco_Auxiliar endAux = alunosDto.getAlunos_endereco().get(x);
+				try {
+					enderecoService.saveEndereco(endAux, aluno);
+				} catch (MenssageNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	
+		// grava os telefones
+		if (alunosDto.alunos_telefone != null) {
+			for (int x = 0; x < alunosDto.alunos_telefone.size(); x++) {
+				AlunosTelefone_Auxiliar telAux = alunosDto.getAlunos_telefone().get(x);
+				try {
+					telefoneService.saveTelefone(telAux, aluno);
+				} catch (MenssageNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		Alunos_Auxiliar aluno_aux = new Alunos_Auxiliar();
 		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -155,6 +192,34 @@ public class AlunosController {
 			throws MenssageNotFoundException {
 		Alunos aluno = alunosService.updateAlunos(id, alunosDto.toAluno());
 
+		enderecoService.deleteEnderecoAluno(id);
+		telefoneService.deleteTelefoneAluno(id);
+
+	    // grava os endereco
+		if (alunosDto.alunos_endereco != null) {
+			for (int x = 0; x < alunosDto.alunos_endereco.size(); x++) {
+				AlunosEndereco_Auxiliar endAux = alunosDto.getAlunos_endereco().get(x);
+				try {
+					enderecoService.saveEndereco(endAux, aluno);
+				} catch (MenssageNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	
+		// grava os telefones
+		if (alunosDto.alunos_telefone != null) {
+			for (int x = 0; x < alunosDto.alunos_telefone.size(); x++) {
+				AlunosTelefone_Auxiliar telAux = alunosDto.getAlunos_telefone().get(x);
+				try {
+					telefoneService.saveTelefone(telAux, aluno);
+				} catch (MenssageNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		Alunos_Auxiliar aluno_aux = new Alunos_Auxiliar();
 		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -177,6 +242,8 @@ public class AlunosController {
 	@APIResponses(value = { @APIResponse(responseCode = "204", description = "Success"),
 			@APIResponse(responseCode = "404", description = "Alunos not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
 	public boolean deleteAluno(@PathParam("id") int id) throws MenssageNotFoundException {
+		enderecoService.deleteEnderecoAluno(id);
+		telefoneService.deleteTelefoneAluno(id);
 		alunosService.deleteAluno(id);
 		return true;
 	}
@@ -204,6 +271,12 @@ public class AlunosController {
 
 		@Schema(title = "cpf", required = true)
 		private String cpf;
+
+		@Schema(title = "alunos_endereco")
+		private List<AlunosEndereco_Auxiliar> alunos_endereco;
+
+		@Schema(title = "alunos_telefone")
+		private List<AlunosTelefone_Auxiliar> alunos_telefone;
 
 		public String getNome() {
 			return nome;
@@ -259,6 +332,22 @@ public class AlunosController {
 
 		public void setCpf(String cpf) {
 			this.cpf = cpf;
+		}
+
+		public List<AlunosEndereco_Auxiliar> getAlunos_endereco() {
+			return alunos_endereco;
+		}
+
+		public void setAlunos_endereco(List<AlunosEndereco_Auxiliar> alunos_endereco) {
+			this.alunos_endereco = alunos_endereco;
+		}
+
+		public List<AlunosTelefone_Auxiliar> getAlunos_telefone() {
+			return alunos_telefone;
+		}
+
+		public void setAlunos_telefone(List<AlunosTelefone_Auxiliar> alunos_telefone) {
+			this.alunos_telefone = alunos_telefone;
 		}
 
 		public Alunos toAluno() {

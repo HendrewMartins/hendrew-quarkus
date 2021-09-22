@@ -6,16 +6,16 @@ public class Bimestre_Angular {
 	private long bimestre;
 	private long ano;
 	private long faltas;
-	private long id_Aluno;
+	private Alunos id_Aluno;
     
     public Bimestre_Angular() {
 	}
 
-	public long getId_Aluno() {
+	public Alunos getId_Aluno() {
 		return id_Aluno;
 	}
 
-	public void setId_Aluno(long id_Aluno) {
+	public void setId_Aluno(Alunos id_Aluno) {
 		this.id_Aluno = id_Aluno;
 	}
 	

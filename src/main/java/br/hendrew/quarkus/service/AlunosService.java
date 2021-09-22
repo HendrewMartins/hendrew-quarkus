@@ -12,6 +12,8 @@ public interface AlunosService {
 	
     Alunos getAlunosById(long id) throws MenssageNotFoundException;
 
+    List<Alunos> getAlunosByNome(String nome) throws MenssageNotFoundException;
+
     List<Alunos> getAllAlunos();
 
     Alunos updateAlunos(long id, Alunos alunos) throws MenssageNotFoundException;

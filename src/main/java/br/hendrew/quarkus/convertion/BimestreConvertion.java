@@ -20,7 +20,7 @@ public class BimestreConvertion {
         angular.setAno(bimestre.getAno());
         angular.setBimestre(bimestre.getBimestre());
         angular.setFaltas(bimestre.getFaltas());
-        angular.setId_Aluno(bimestre.getAlunos().getId());
+        angular.setId_Aluno(bimestre.getAlunos());
         return angular;
     }
 

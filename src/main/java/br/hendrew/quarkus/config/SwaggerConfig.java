@@ -14,7 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
         },
         info = @Info(
                 title = "Notas API em Quarkus",
-                version = "0.0.1",
+                version = "1.0.0",
                 contact = @Contact(
                         name = "Hendrew Felipe Martins",
                         email = "hendrewmartins@gmail.com"),

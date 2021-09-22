@@ -24,7 +24,22 @@ public class Alunos {
 
 	@Column(name = "dt_nasc", nullable = false)
     private Date dt_nasc;
+
+	@Column(name = "nm_mae", nullable = false)
+    private String nm_mae;
+
+	@Column(name = "matricula", nullable = false)
+    private String matricula;
+
+	@Column(name = "nm_pai", nullable = false)
+    private String nm_pai;
     
+	@Column(name = "rg_aluno", nullable = false)
+    private String rg_aluno;
+
+	@Column(name = "cpf", nullable = false)
+    private String cpf;
+
     public Alunos() {
 	}
     
@@ -45,6 +60,7 @@ public class Alunos {
 		this.nome = nome;
 	}
 
+
 	public Date getDt_nasc(){
 		return dt_nasc;
 	}
@@ -53,10 +69,60 @@ public class Alunos {
 		this.dt_nasc = dt_nasc;
 	}
 
+	public String getNm_mae() {
+		return nm_mae;
+	}
+
+
+	public void setNm_mae(String nm_mae) {
+		this.nm_mae = nm_mae;
+	}
+
+
+	public String getMatricula() {
+		return matricula;
+	}
+
+
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
+	}
+
+
+	public String getNm_pai() {
+		return nm_pai;
+	}
+
+
+	public void setNm_pai(String nm_pai) {
+		this.nm_pai = nm_pai;
+	}
+
+
+	public String getRg_aluno() {
+		return rg_aluno;
+	}
+
+
+	public void setRg_aluno(String rg_aluno) {
+		this.rg_aluno = rg_aluno;
+	}
+
+
+	public String getCpf() {
+		return cpf;
+	}
+
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Alunos [id=" + id + ", nome=" + nome +", dt_nasc=" + dt_nasc + "]";
+		return "Alunos [cpf=" + cpf + ", dt_nasc=" + dt_nasc + ", id=" + id + ", matricula=" + matricula + ", nm_mae="
+				+ nm_mae + ", nm_pai=" + nm_pai + ", nome=" + nome + ", rg_aluno=" + rg_aluno + "]";
 	}
-    
 
 }

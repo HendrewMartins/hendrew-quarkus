@@ -7,7 +7,7 @@ public class Nota_Angular {
 	private long id_Avaliacao;
 	private double nota;
 	private long id_Bimestre;
-	private long id_Aluno;
+	private Alunos id_Aluno;
 	
     public Nota_Angular(){
 
@@ -44,11 +44,11 @@ public class Nota_Angular {
 		this.id_Bimestre = id_Bimestre;
 	}
 
-	public long getId_Aluno() {
+	public Alunos getId_Aluno() {
 		return id_Aluno;
 	}
 
-	public void setId_Aluno(long id_aluno) {
+	public void setId_Aluno(Alunos id_aluno) {
 		this.id_Aluno = id_aluno;
 	}
 }

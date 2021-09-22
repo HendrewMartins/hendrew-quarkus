@@ -15,7 +15,7 @@ public class NotaConvertion {
         Nota_Angular angular = new Nota_Angular();
         
         angular.setId(nota.getId());
-        angular.setId_Aluno(nota.getBimestre().getAlunos().getId());
+        angular.setId_Aluno(nota.getBimestre().getAlunos());
         angular.setId_Avaliacao(nota.getAvaliacao().getId());
         angular.setNota(nota.getNota());
         angular.setId_Bimestre(nota.getBimestre().getId());

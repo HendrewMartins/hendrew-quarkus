@@ -22,6 +22,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
+import br.hendrew.quarkus.entity.Alunos;
 import br.hendrew.quarkus.entity.Nota;
 import br.hendrew.quarkus.entity.Nota_Angular;
 import br.hendrew.quarkus.entity.Nota_Auxiliar;
@@ -131,7 +132,7 @@ public class NotaController {
 
         
         @Schema(title = "id_Aluno", required = true)
-        private long id_Aluno;
+        private Alunos id_Aluno;
         
 
         public long getId_Avaliacao() {
@@ -158,11 +159,11 @@ public class NotaController {
             this.id_Bimestre = id_Bimestre;
         }
 
-        public long getId_Aluno() {
+        public Alunos getId_Aluno() {
             return id_Aluno;
         }
 
-        public void setId_Aluno(long id_Aluno) {
+        public void setId_Aluno(Alunos id_Aluno) {
             this.id_Aluno = id_Aluno;
         }
                

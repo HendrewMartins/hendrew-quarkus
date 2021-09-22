@@ -23,12 +23,12 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import br.hendrew.quarkus.convertion.BimestreConvertion;
+import br.hendrew.quarkus.entity.Alunos;
 import br.hendrew.quarkus.entity.Bimestre;
 import br.hendrew.quarkus.entity.Bimestre_Angular;
 import br.hendrew.quarkus.entity.Bimestre_Auxiliar;
 import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.exceptionhandler.ExceptionHandler;
-import br.hendrew.quarkus.service.AlunosService;
 import br.hendrew.quarkus.service.BimestreService;
 
 @RequestScoped
@@ -38,13 +38,11 @@ import br.hendrew.quarkus.service.BimestreService;
 public class BimestreController {
 
     private final BimestreService bimestreService;
-    private final AlunosService alunosService;
     BimestreConvertion convertion;
 
     @Inject
-    public BimestreController(BimestreService bimestreService, AlunosService alunosService) {
+    public BimestreController(BimestreService bimestreService) {
         this.bimestreService = bimestreService;
-        this.alunosService = alunosService;
     }
 
     @GET
@@ -92,10 +90,10 @@ public class BimestreController {
     @PermitAll
     @Path("/save")
     @Operation(summary = "Adicionar a Bimestre", description = "Create um Bimestre e persistir no banco")
-    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))))
+    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre_Angular.class))))
     public Bimestre createBimestre(@Valid BimestreDto bimestreDto) throws MenssageNotFoundException {
         return bimestreService.saveBimestre(bimestreDto.toBimestre(),
-                alunosService.getAlunosById(bimestreDto.getId_Aluno()));
+                bimestreDto.getId_Aluno());
     }
 
     @PUT
@@ -103,12 +101,12 @@ public class BimestreController {
     @Path("/edit/{id}")
     @Operation(summary = "Atualizar um Bimestre", description = "Atualizar um Bimestre existente via id")
     @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))),
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre_Angular.class))),
             @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
     public Bimestre updateBimestre(@PathParam("id") int id, @Valid BimestreDto bimestreDto)
             throws MenssageNotFoundException {
         return bimestreService.updateBimestre(id, bimestreDto.toBimestre(),
-                alunosService.getAlunosById(bimestreDto.getId_Aluno()));
+               bimestreDto.getId_Aluno());
     }
 
     @DELETE
@@ -136,7 +134,7 @@ public class BimestreController {
         private long faltas;
 
         @Schema(title = "id_Aluno", required = true)
-        private long id_Aluno;
+        private Alunos id_Aluno;
 
         public long getBimestre() {
             return bimestre;
@@ -162,11 +160,11 @@ public class BimestreController {
             this.faltas = faltas;
         }
 
-        public long getId_Aluno() {
+        public Alunos getId_Aluno() {
             return id_Aluno;
         }
 
-        public void setId_Aluno(long id_Aluno) {
+        public void setId_Aluno(Alunos id_Aluno) {
             this.id_Aluno = id_Aluno;
         }
 

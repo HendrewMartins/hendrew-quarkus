@@ -9,9 +9,9 @@ import br.hendrew.quarkus.entity.Nota;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
-public class NotaRepository implements PanacheRepository<Nota>{
+public class NotaRepository implements PanacheRepository<Nota> {
 
-	public List<Nota> findByBimestre(Bimestre bimestre){
-	       return list("bimestre", bimestre);
-	   }
+	public List<Nota> findByBimestre(Bimestre bimestre) {
+		return list("bimestre", bimestre);
+	}
 }

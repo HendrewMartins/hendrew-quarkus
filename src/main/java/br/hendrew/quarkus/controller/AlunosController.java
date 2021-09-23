@@ -81,6 +81,36 @@ public class AlunosController {
 
 	@GET
 	@PermitAll
+	@Path("/page/{page}")
+	@Operation(summary = "Listar Alunos", description = "Lista todos alunos")
+	@APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Alunos.class))))
+	public List<Alunos_Auxiliar> getPageAlunos(@PathParam("page") int pagina) throws MenssageNotFoundException {
+		List<Alunos_Auxiliar> lista = new ArrayList<Alunos_Auxiliar>();
+
+		// Paginação
+		List<Alunos> aluno = alunosService.getAlunosPage(pagina, 5);
+		;
+
+		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+
+		for (int i = 0; i < aluno.size(); i++) {
+			Alunos_Auxiliar aux = new Alunos_Auxiliar();
+			aux.setId(aluno.get(i).getId());
+			aux.setNome(aluno.get(i).getNome());
+			aux.setDt_nasc(formatador.format(aluno.get(i).getDt_nasc()));
+			aux.setCpf(aluno.get(i).getCpf());
+			aux.setMatricula(aluno.get(i).getMatricula());
+			aux.setNm_mae(aluno.get(i).getNm_mae());
+			aux.setNm_pai(aluno.get(i).getNm_pai());
+			aux.setRg_aluno(aluno.get(i).getRg_aluno());
+			lista.add(i, aux);
+		}
+
+		return lista;
+	}
+
+	@GET
+	@PermitAll
 	@Path("/id/{id}")
 	@Operation(summary = "Pegar aluno", description = "Pesquisa por um ID o Aluno")
 	@APIResponses(value = {
@@ -103,6 +133,17 @@ public class AlunosController {
 		aluno_aux.setAlunos_telefone(telefoneService.getTelefonePorAluno(aluno.getId()));
 
 		return aluno_aux;
+	}
+
+	@GET
+	@PermitAll
+	@Path("/count")
+	@Operation(summary = "Pegar Quantidade dos Alunos", description = "Quantidade Repository Alunos")
+	@APIResponses(value = {
+			@APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Long.class))),
+			@APIResponse(responseCode = "404", description = "Alunos not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+	public long getQuantidade() throws MenssageNotFoundException {
+		return alunosService.countAluno();
 	}
 
 	@GET
@@ -153,7 +194,6 @@ public class AlunosController {
 			}
 		}
 
-	
 		// grava os telefones
 		if (alunosDto.alunos_telefone != null) {
 			for (int x = 0; x < alunosDto.alunos_telefone.size(); x++) {
@@ -195,7 +235,7 @@ public class AlunosController {
 		enderecoService.deleteEnderecoAluno(id);
 		telefoneService.deleteTelefoneAluno(id);
 
-	    // grava os endereco
+		// grava os endereco
 		if (alunosDto.alunos_endereco != null) {
 			for (int x = 0; x < alunosDto.alunos_endereco.size(); x++) {
 				AlunosEndereco_Auxiliar endAux = alunosDto.getAlunos_endereco().get(x);
@@ -207,7 +247,6 @@ public class AlunosController {
 			}
 		}
 
-	
 		// grava os telefones
 		if (alunosDto.alunos_telefone != null) {
 			for (int x = 0; x < alunosDto.alunos_telefone.size(); x++) {

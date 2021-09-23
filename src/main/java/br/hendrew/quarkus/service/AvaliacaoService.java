@@ -7,14 +7,14 @@ import br.hendrew.quarkus.entity.Avaliacao_Auxiliar;
 import br.hendrew.quarkus.exception.MenssageNotFoundException;
 
 public interface AvaliacaoService {
-	
-		Avaliacao getAvaliacaoById(long id) throws MenssageNotFoundException;
 
-	    List<Avaliacao_Auxiliar> getAllAvaliacao();
+	Avaliacao getAvaliacaoById(long id) throws MenssageNotFoundException;
 
-	    Avaliacao updateAvaliacao(long id, Avaliacao avaliacao) throws MenssageNotFoundException;
+	List<Avaliacao_Auxiliar> getAllAvaliacao();
 
-	    Avaliacao saveAvaliacao(Avaliacao avaliacao);
+	Avaliacao updateAvaliacao(long id, Avaliacao avaliacao) throws MenssageNotFoundException;
 
-	    void deleteAvaliacao(long id) throws MenssageNotFoundException;
+	Avaliacao saveAvaliacao(Avaliacao avaliacao);
+
+	void deleteAvaliacao(long id) throws MenssageNotFoundException;
 }

@@ -14,13 +14,13 @@ import javax.persistence.Column;
 @Entity
 @Table(name = "alunos_telefone")
 public class AlunosTelefone implements Serializable {
-    
+
     @Id
     private long sequencia;
 
     @Id
     @ManyToOne
-	@JoinColumn(name="id_aluno")
+    @JoinColumn(name = "id_aluno")
     private Alunos aluno;
 
     @Column(name = "tipo", nullable = false)
@@ -36,7 +36,7 @@ public class AlunosTelefone implements Serializable {
 
     public AlunosTelefone() {
     }
-    
+
     public long getSequencia() {
         return sequencia;
     }
@@ -83,7 +83,4 @@ public class AlunosTelefone implements Serializable {
                 + sequencia + ", tipo=" + tipo + "]";
     }
 
-   
-
-    
 }

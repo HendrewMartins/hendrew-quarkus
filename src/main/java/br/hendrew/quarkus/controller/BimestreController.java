@@ -48,9 +48,18 @@ public class BimestreController {
     @GET
     @PermitAll
     @Operation(summary = "Listar Bimestre", description = "Lista todas Bimestre")
-    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre.class))))
+    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre_Auxiliar.class))))
     public List<Bimestre_Auxiliar> getBimestre() {
         return bimestreService.getAllBimestreNmAluno();
+    }
+
+    @GET
+    @PermitAll
+    @Path("/page/{page}")
+    @Operation(summary = "Listar Bimestre por Pagina", description = "Lista todas Bimestre por Pagina")
+    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre_Auxiliar.class))))
+    public List<Bimestre_Auxiliar> getPageBimestre(@PathParam("page") int pagina) throws MenssageNotFoundException {
+        return bimestreService.getAllBimestreNmAlunoPage(pagina, 5);
     }
 
     @GET
@@ -92,8 +101,7 @@ public class BimestreController {
     @Operation(summary = "Adicionar a Bimestre", description = "Create um Bimestre e persistir no banco")
     @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Bimestre_Angular.class))))
     public Bimestre createBimestre(@Valid BimestreDto bimestreDto) throws MenssageNotFoundException {
-        return bimestreService.saveBimestre(bimestreDto.toBimestre(),
-                bimestreDto.getId_Aluno());
+        return bimestreService.saveBimestre(bimestreDto.toBimestre(), bimestreDto.getId_Aluno());
     }
 
     @PUT
@@ -105,8 +113,7 @@ public class BimestreController {
             @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
     public Bimestre updateBimestre(@PathParam("id") int id, @Valid BimestreDto bimestreDto)
             throws MenssageNotFoundException {
-        return bimestreService.updateBimestre(id, bimestreDto.toBimestre(),
-               bimestreDto.getId_Aluno());
+        return bimestreService.updateBimestre(id, bimestreDto.toBimestre(), bimestreDto.getId_Aluno());
     }
 
     @DELETE
@@ -116,9 +123,20 @@ public class BimestreController {
     @APIResponses(value = { @APIResponse(responseCode = "204", description = "Success"),
             @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
     public Boolean deleteBimestre(@PathParam("id") int id) throws MenssageNotFoundException {
-        
+
         bimestreService.deleteBimestre(id);
         return true;
+    }
+
+    @GET
+    @PermitAll
+    @Path("/count")
+    @Operation(summary = "Pegar Quantidade dos Bimestre", description = "Quantidade Repository Bimestre")
+    @APIResponses(value = {
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Long.class))),
+            @APIResponse(responseCode = "404", description = "Bimestre not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+    public long getQuantidade() throws MenssageNotFoundException {
+        return bimestreService.countBimestre();
     }
 
     @Schema(name = "BimestreDTO", description = "DTO para Criar um novo Bimestre")

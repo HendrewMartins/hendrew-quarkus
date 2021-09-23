@@ -11,20 +11,25 @@ import br.hendrew.quarkus.exception.MenssageNotFoundException;
 
 public interface NotaService {
 
-	Nota getNotaById(long id) throws MenssageNotFoundException;
+    Nota getNotaById(long id) throws MenssageNotFoundException;
 
     Nota_Angular getNotaAngById(long id) throws MenssageNotFoundException;
-	
-	List<Nota> getNotaPorBimestre(Bimestre bimestre) throws MenssageNotFoundException;
+
+    List<Nota> getNotaPorBimestre(Bimestre bimestre) throws MenssageNotFoundException;
 
     List<Nota> getAllNota();
 
     List<Nota_Auxiliar> getAllNotaDescricao();
 
-    Nota updateNota(long id, Nota_Angular nota_angular, Bimestre bimestre, Avaliacao avaliacao) throws MenssageNotFoundException;
+    List<Nota_Auxiliar> getAllNotaDescricaoPage(int pag, int quant);
+
+    Nota updateNota(long id, Nota_Angular nota_angular, Bimestre bimestre, Avaliacao avaliacao)
+            throws MenssageNotFoundException;
 
     Nota saveNota(Nota_Angular nota_angular, Bimestre bimestre, Avaliacao avaliacao);
 
     void deleteNota(long id) throws MenssageNotFoundException;
+
+    long countNotas();
 
 }

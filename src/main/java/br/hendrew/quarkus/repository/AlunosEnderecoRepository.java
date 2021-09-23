@@ -10,8 +10,8 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
 public class AlunosEnderecoRepository implements PanacheRepository<AlunosEndereco> {
-    
-    public List<AlunosEndereco> findByAlunos(Alunos aluno){
+
+    public List<AlunosEndereco> findByAlunos(Alunos aluno) {
         return list("aluno", aluno);
     }
 }

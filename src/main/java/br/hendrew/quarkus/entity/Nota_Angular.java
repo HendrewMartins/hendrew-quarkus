@@ -1,17 +1,17 @@
 package br.hendrew.quarkus.entity;
 
 public class Nota_Angular {
-    
-    private long id;
-	
+
+	private long id;
+
 	private long id_Avaliacao;
 	private double nota;
 	private long id_Bimestre;
 	private Alunos id_Aluno;
-	
-    public Nota_Angular(){
 
-    }
+	public Nota_Angular() {
+
+	}
 
 	public long getId() {
 		return id;
@@ -28,10 +28,11 @@ public class Nota_Angular {
 	public void setId_Avaliacao(long id_Avaliacao) {
 		this.id_Avaliacao = id_Avaliacao;
 	}
-		
+
 	public double getNota() {
 		return nota;
 	}
+
 	public void setNota(double nota) {
 		this.nota = nota;
 	}

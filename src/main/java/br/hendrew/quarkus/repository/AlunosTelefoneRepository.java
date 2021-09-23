@@ -9,9 +9,9 @@ import br.hendrew.quarkus.entity.AlunosTelefone;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
-public class AlunosTelefoneRepository implements PanacheRepository<AlunosTelefone>{
-    
-    public List<AlunosTelefone> findByAlunos(Alunos aluno){
+public class AlunosTelefoneRepository implements PanacheRepository<AlunosTelefone> {
+
+    public List<AlunosTelefone> findByAlunos(Alunos aluno) {
         return list("aluno", aluno);
     }
 }

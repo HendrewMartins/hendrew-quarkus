@@ -11,9 +11,9 @@ public class NotaConvertion {
 
     }
 
-    public Nota_Angular convertionNota(Nota nota){
+    public Nota_Angular convertionNota(Nota nota) {
         Nota_Angular angular = new Nota_Angular();
-        
+
         angular.setId(nota.getId());
         angular.setId_Aluno(nota.getBimestre().getAlunos());
         angular.setId_Avaliacao(nota.getAvaliacao().getId());
@@ -22,17 +22,17 @@ public class NotaConvertion {
         return angular;
     }
 
-    public Nota notaConvertion(Nota_Angular angular, Bimestre bimestre, Avaliacao avaliacao){
+    public Nota notaConvertion(Nota_Angular angular, Bimestre bimestre, Avaliacao avaliacao) {
         Nota nota = new Nota();
 
-        if(angular.getId() > 0){
+        if (angular.getId() > 0) {
             nota.setId(angular.getId());
         }
         nota.setNota(angular.getNota());
         nota.setAvaliacao(avaliacao);
         nota.setBimestre(bimestre);
-        
+
         return nota;
     }
-    
+
 }

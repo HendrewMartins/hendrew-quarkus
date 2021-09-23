@@ -38,9 +38,9 @@ public class DefaultAvaliacaoService implements AvaliacaoService {
             Avaliacao_Auxiliar auxiliar = new Avaliacao_Auxiliar();
             auxiliar.setId(avaliacao.get(i).getId());
             auxiliar.setPeso(avaliacao.get(i).getPeso());
-            auxiliar.setDescricao(avaliacao.get(i).getDescricao()+" - "+auxiliar.getPeso()+"%");
+            auxiliar.setDescricao(avaliacao.get(i).getDescricao() + " - " + auxiliar.getPeso() + "%");
 
-            listaAvaliacao.add(i,auxiliar);
+            listaAvaliacao.add(i, auxiliar);
         }
 
         return listaAvaliacao;

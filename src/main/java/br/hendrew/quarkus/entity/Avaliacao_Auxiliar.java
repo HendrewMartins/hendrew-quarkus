@@ -2,13 +2,12 @@ package br.hendrew.quarkus.entity;
 
 public class Avaliacao_Auxiliar {
 
-    private long id;
+	private long id;
 
-    private String descricao;
-	
+	private String descricao;
+
 	private Double peso;
-	
-	
+
 	public Avaliacao_Auxiliar() {
 	}
 
@@ -31,7 +30,7 @@ public class Avaliacao_Auxiliar {
 	public Double getPeso() {
 		return peso;
 	}
-	
+
 	public void setPeso(Double peso) {
 		this.peso = peso;
 	}

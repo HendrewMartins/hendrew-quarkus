@@ -5,11 +5,8 @@ import java.util.List;
 import br.hendrew.quarkus.entity.Alunos;
 import br.hendrew.quarkus.exception.MenssageNotFoundException;
 
-
-
 public interface AlunosService {
 
-	
     Alunos getAlunosById(long id) throws MenssageNotFoundException;
 
     List<Alunos> getAlunosByNome(String nome) throws MenssageNotFoundException;
@@ -21,4 +18,8 @@ public interface AlunosService {
     Alunos saveAlunos(Alunos alunos);
 
     void deleteAluno(long id) throws MenssageNotFoundException;
+
+    long countAluno();
+
+    List<Alunos> getAlunosPage(int pag, int quant) throws MenssageNotFoundException;
 }

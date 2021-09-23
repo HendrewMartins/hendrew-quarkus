@@ -16,11 +16,12 @@ import br.hendrew.quarkus.entity.Nota_Auxiliar;
 import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.repository.NotaRepository;
 import br.hendrew.quarkus.service.NotaService;
+import io.quarkus.panache.common.Page;
 
 @ApplicationScoped
 public class DefaultNotaService implements NotaService {
-	
-	private final NotaRepository notaRepository;
+
+    private final NotaRepository notaRepository;
     public NotaConvertion convertion = new NotaConvertion();
 
     @Inject
@@ -30,7 +31,8 @@ public class DefaultNotaService implements NotaService {
 
     @Override
     public Nota getNotaById(long id) throws MenssageNotFoundException {
-        return notaRepository.findByIdOptional(id).orElseThrow(() -> new MenssageNotFoundException("There Nota doesn't exist"));
+        return notaRepository.findByIdOptional(id)
+                .orElseThrow(() -> new MenssageNotFoundException("There Nota doesn't exist"));
     }
 
     @Override
@@ -40,7 +42,7 @@ public class DefaultNotaService implements NotaService {
                 .orElseThrow(() -> new MenssageNotFoundException("There Bimestre doesn't exist"));
         return convertion.convertionNota(nota);
     }
-    
+
     @Override
     public List<Nota> getNotaPorBimestre(Bimestre bimestre) throws MenssageNotFoundException {
         return notaRepository.findByBimestre(bimestre);
@@ -52,34 +54,60 @@ public class DefaultNotaService implements NotaService {
     }
 
     @Override
-    public  List<Nota_Auxiliar>  getAllNotaDescricao(){
-        List<Nota> listNotas = notaRepository.listAll();	
-		
-		List<Nota_Auxiliar> lista = new ArrayList<Nota_Auxiliar>();
-		for(int i = 0; i < listNotas.size(); i++)
-		{
-			Nota_Auxiliar aux = new Nota_Auxiliar();
-				aux.setDesc_Aluno(listNotas.get(i).getBimestre().getAlunos().getNome());
-				aux.setId(listNotas.get(i).getId());
-				aux.setId_Bimestre(listNotas.get(i).getBimestre().getId());
-				aux.setId_Aluno(listNotas.get(i).getBimestre().getAlunos().getId());
-				aux.setId_Avaliacao(listNotas.get(i).getAvaliacao().getId());
-				aux.setNotas(listNotas.get(i).getNota());
-				aux.setDesc_avaliacao(listNotas.get(i).getAvaliacao().getDescricao()+" - "+listNotas.get(i).getAvaliacao().getPeso()+"%");
-				aux.setAno(listNotas.get(i).getBimestre().getAno());
-				aux.setDesc_bimestre(listNotas.get(i).getBimestre().getBimestre()+"º"+" Bimestre - "+listNotas.get(i).getBimestre().getAno());
-			
+    public List<Nota_Auxiliar> getAllNotaDescricao() {
+        List<Nota> listNotas = notaRepository.listAll();
 
-			lista.add(i,aux);
-		}
-		
-		return lista;
+        List<Nota_Auxiliar> lista = new ArrayList<Nota_Auxiliar>();
+        for (int i = 0; i < listNotas.size(); i++) {
+            Nota_Auxiliar aux = new Nota_Auxiliar();
+            aux.setDesc_Aluno(listNotas.get(i).getBimestre().getAlunos().getNome());
+            aux.setId(listNotas.get(i).getId());
+            aux.setId_Bimestre(listNotas.get(i).getBimestre().getId());
+            aux.setId_Aluno(listNotas.get(i).getBimestre().getAlunos().getId());
+            aux.setId_Avaliacao(listNotas.get(i).getAvaliacao().getId());
+            aux.setNotas(listNotas.get(i).getNota());
+            aux.setDesc_avaliacao(listNotas.get(i).getAvaliacao().getDescricao() + " - "
+                    + listNotas.get(i).getAvaliacao().getPeso() + "%");
+            aux.setAno(listNotas.get(i).getBimestre().getAno());
+            aux.setDesc_bimestre(listNotas.get(i).getBimestre().getBimestre() + "º" + " Bimestre - "
+                    + listNotas.get(i).getBimestre().getAno());
+
+            lista.add(i, aux);
+        }
+
+        return lista;
+    }
+
+    @Override
+    public List<Nota_Auxiliar> getAllNotaDescricaoPage(int pag, int quant) {
+        List<Nota> listNotas = notaRepository.findAll().page(Page.of(pag, quant)).list();
+
+        List<Nota_Auxiliar> lista = new ArrayList<Nota_Auxiliar>();
+        for (int i = 0; i < listNotas.size(); i++) {
+            Nota_Auxiliar aux = new Nota_Auxiliar();
+            aux.setDesc_Aluno(listNotas.get(i).getBimestre().getAlunos().getNome());
+            aux.setId(listNotas.get(i).getId());
+            aux.setId_Bimestre(listNotas.get(i).getBimestre().getId());
+            aux.setId_Aluno(listNotas.get(i).getBimestre().getAlunos().getId());
+            aux.setId_Avaliacao(listNotas.get(i).getAvaliacao().getId());
+            aux.setNotas(listNotas.get(i).getNota());
+            aux.setDesc_avaliacao(listNotas.get(i).getAvaliacao().getDescricao() + " - "
+                    + listNotas.get(i).getAvaliacao().getPeso() + "%");
+            aux.setAno(listNotas.get(i).getBimestre().getAno());
+            aux.setDesc_bimestre(listNotas.get(i).getBimestre().getBimestre() + "º" + " Bimestre - "
+                    + listNotas.get(i).getBimestre().getAno());
+
+            lista.add(i, aux);
+        }
+
+        return lista;
     }
 
     @Transactional
     @Override
-    public Nota updateNota(long id, Nota_Angular nota_angular, Bimestre bimestre,Avaliacao avaliacao) throws MenssageNotFoundException {
-    	Nota nota = convertion.notaConvertion(nota_angular, bimestre, avaliacao);
+    public Nota updateNota(long id, Nota_Angular nota_angular, Bimestre bimestre, Avaliacao avaliacao)
+            throws MenssageNotFoundException {
+        Nota nota = convertion.notaConvertion(nota_angular, bimestre, avaliacao);
 
         Nota existingNota = getNotaById(id);
         existingNota.setAvaliacao(nota.getAvaliacao());
@@ -99,9 +127,12 @@ public class DefaultNotaService implements NotaService {
     @Transactional
     @Override
     public void deleteNota(long id) throws MenssageNotFoundException {
-    	notaRepository.delete(getNotaById(id));
+        notaRepository.delete(getNotaById(id));
     }
 
-
+    @Override
+    public long countNotas() {
+        return notaRepository.count();
+    }
 
 }

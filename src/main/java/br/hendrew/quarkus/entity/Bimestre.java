@@ -1,6 +1,5 @@
 package br.hendrew.quarkus.entity;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,22 +12,22 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "bimestre_new")
 public class Bimestre {
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+
 	@Column(name = "bimestre", nullable = false)
 	private long bimestre;
-	
+
 	@Column(name = "ano", nullable = false)
 	private long ano;
-	
+
 	@Column(name = "faltas", nullable = false)
 	private long faltas;
-	
+
 	@ManyToOne
-	@JoinColumn(name="id_alunos")
+	@JoinColumn(name = "id_alunos")
 	private Alunos alunos;
 
 	public Bimestre() {
@@ -37,7 +36,7 @@ public class Bimestre {
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -80,5 +79,4 @@ public class Bimestre {
 				+ alunos + "]";
 	}
 
-	
 }

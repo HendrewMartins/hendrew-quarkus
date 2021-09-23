@@ -10,17 +10,19 @@ import br.hendrew.quarkus.exception.MenssageNotFoundException;
 
 public interface BimestreService {
 
-	Bimestre_Angular getBimestreAngById(long id) throws MenssageNotFoundException;
+    Bimestre_Angular getBimestreAngById(long id) throws MenssageNotFoundException;
 
     Bimestre getBimestreById(long id) throws MenssageNotFoundException;
-	
-	List<Bimestre> getBimestrePorAluno(long id) throws MenssageNotFoundException;
+
+    List<Bimestre> getBimestrePorAluno(long id) throws MenssageNotFoundException;
 
     List<Bimestre_Angular> getBimestrePorAluno_Angular(long id) throws MenssageNotFoundException;
 
     List<Bimestre> getAllBimestre();
 
     List<Bimestre_Auxiliar> getAllBimestreNmAluno();
+
+    List<Bimestre_Auxiliar> getAllBimestreNmAlunoPage(int pag, int quant);
 
     Bimestre updateBimestre(long id, Bimestre_Angular bimestre_angular, Alunos alunos) throws MenssageNotFoundException;
 
@@ -29,5 +31,7 @@ public interface BimestreService {
     void deleteBimestre(long id) throws MenssageNotFoundException;
 
     List<Bimestre_Auxiliar> getNotaBimestrePorAluno(long id) throws MenssageNotFoundException;
+
+    long countBimestre();
 
 }

@@ -62,8 +62,8 @@ public class DefaultAlunosTelefoneService implements AlunosTelefoneService {
         aluno = alunosRepository.findByIdOptional(id)
                 .orElseThrow(() -> new MenssageNotFoundException("There Aluno doesn't exist"));
         List<AlunosTelefone> telefone = telefoneRepository.findByAlunos(aluno);
-        
-        for(int x=0; x < telefone.size(); x++){
+
+        for (int x = 0; x < telefone.size(); x++) {
             telefoneRepository.delete(telefone.get(x));
         }
     }

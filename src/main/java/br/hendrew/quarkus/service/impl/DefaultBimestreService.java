@@ -16,6 +16,7 @@ import br.hendrew.quarkus.exception.MenssageNotFoundException;
 import br.hendrew.quarkus.repository.AlunosRepository;
 import br.hendrew.quarkus.repository.BimestreRepository;
 import br.hendrew.quarkus.service.BimestreService;
+import io.quarkus.panache.common.Page;
 
 @ApplicationScoped
 public class DefaultBimestreService implements BimestreService {
@@ -46,7 +47,6 @@ public class DefaultBimestreService implements BimestreService {
         return bimestre;
     }
 
-
     @Override
     public List<Bimestre_Angular> getBimestrePorAluno_Angular(long id) throws MenssageNotFoundException {
         Alunos aluno = new Alunos();
@@ -76,7 +76,8 @@ public class DefaultBimestreService implements BimestreService {
             bimestreAux.setId(bimestre.get(i).getId());
             bimestreAux.setId_Alunos(bimestre.get(i).getAlunos().getId());
             bimestreAux.setNm_Alunos(bimestre.get(i).getAlunos().getNome());
-            bimestreAux.setDesc_bimestre(bimestre.get(i).getId()+" - "+bimestreAux.getBimestre()+"° Bimestre de "+bimestreAux.getAno());
+            bimestreAux.setDesc_bimestre(bimestre.get(i).getId() + " - " + bimestreAux.getBimestre() + "° Bimestre de "
+                    + bimestreAux.getAno());
 
             listaAuxiliar.add(i, bimestreAux);
         }
@@ -116,9 +117,30 @@ public class DefaultBimestreService implements BimestreService {
         return lista;
     }
 
+    @Override
+    public List<Bimestre_Auxiliar> getAllBimestreNmAlunoPage(int pag, int quant) {
+        List<Bimestre> listBimestre = bimestreRepository.findAll().page(Page.of(pag, quant)).list();
+
+        List<Bimestre_Auxiliar> lista = new ArrayList<Bimestre_Auxiliar>();
+        for (int i = 0; i < listBimestre.size(); i++) {
+            Bimestre_Auxiliar aux = new Bimestre_Auxiliar();
+            aux.setNm_Alunos(listBimestre.get(i).getAlunos().getNome());
+            aux.setAno(listBimestre.get(i).getAno());
+            aux.setId(listBimestre.get(i).getId());
+            aux.setBimestre(listBimestre.get(i).getBimestre());
+            aux.setDesc_bimestre(listBimestre.get(i).getBimestre() + "º" + " Bimestre");
+            aux.setId_Alunos(listBimestre.get(i).getAlunos().getId());
+            aux.setFaltas(listBimestre.get(i).getFaltas());
+            lista.add(i, aux);
+        }
+
+        return lista;
+    }
+
     @Transactional
     @Override
-    public Bimestre updateBimestre(long id, Bimestre_Angular bimestre_angular, Alunos alunos) throws MenssageNotFoundException {     
+    public Bimestre updateBimestre(long id, Bimestre_Angular bimestre_angular, Alunos alunos)
+            throws MenssageNotFoundException {
         Bimestre bimestre = convertion.bimestreConvertion(bimestre_angular, alunos);
 
         Bimestre existingBimestre = getBimestreById(id);
@@ -141,6 +163,11 @@ public class DefaultBimestreService implements BimestreService {
     @Override
     public void deleteBimestre(long id) throws MenssageNotFoundException {
         bimestreRepository.delete(getBimestreById(id));
+    }
+
+    @Override
+    public long countBimestre() {
+        return bimestreRepository.count();
     }
 
 }

@@ -1,17 +1,14 @@
 package br.hendrew.quarkus.convertion;
 
-
-
 import br.hendrew.quarkus.entity.Alunos;
 import br.hendrew.quarkus.entity.Bimestre;
 import br.hendrew.quarkus.entity.Bimestre_Angular;
 
 public class BimestreConvertion {
 
-    public BimestreConvertion(){
+    public BimestreConvertion() {
 
     }
-    
 
     public Bimestre_Angular convertionBimestre(Bimestre bimestre) {
         Bimestre_Angular angular = new Bimestre_Angular();
@@ -24,9 +21,9 @@ public class BimestreConvertion {
         return angular;
     }
 
-    public Bimestre bimestreConvertion(Bimestre_Angular angular, Alunos alunos){
+    public Bimestre bimestreConvertion(Bimestre_Angular angular, Alunos alunos) {
         Bimestre bimestre = new Bimestre();
-        if(angular.getId() > 0){
+        if (angular.getId() > 0) {
             bimestre.setId(angular.getId());
         }
         bimestre.setAno(angular.getAno());

@@ -1,7 +1,7 @@
 package br.hendrew.quarkus.entity;
 
 public class AlunosEndereco_Auxiliar {
-   
+
     private long sequencia;
 
     private String tipo;
@@ -15,7 +15,6 @@ public class AlunosEndereco_Auxiliar {
     private String bairro;
 
     private String complemento;
-
 
     public AlunosEndereco_Auxiliar() {
     }
@@ -82,5 +81,5 @@ public class AlunosEndereco_Auxiliar {
                 + ", logradouro=" + logradouro + ", numero=" + numero + ", sequencia=" + sequencia + ", tipo=" + tipo
                 + "]";
     }
-    
+
 }

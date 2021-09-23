@@ -24,7 +24,8 @@ public class DefaultAlunosEnderecoService implements AlunosEnderecoService {
     public AlunosEnderecoConvertion convertion = new AlunosEnderecoConvertion();
 
     @Inject
-    public DefaultAlunosEnderecoService(AlunosEnderecoRepository enderecoRepository, AlunosRepository alunosRepository) {
+    public DefaultAlunosEnderecoService(AlunosEnderecoRepository enderecoRepository,
+            AlunosRepository alunosRepository) {
         this.enderecoRepository = enderecoRepository;
         this.alunosRepository = alunosRepository;
     }
@@ -45,12 +46,11 @@ public class DefaultAlunosEnderecoService implements AlunosEnderecoService {
         return enderecoAux;
     }
 
-
-
     @Transactional
     @Override
-    public void saveEndereco(AlunosEndereco_Auxiliar alunosenderecoaux, Alunos alunos) throws MenssageNotFoundException {
-        AlunosEndereco endereco = convertion.alunosEnderecoConvertion(alunosenderecoaux, alunos);  
+    public void saveEndereco(AlunosEndereco_Auxiliar alunosenderecoaux, Alunos alunos)
+            throws MenssageNotFoundException {
+        AlunosEndereco endereco = convertion.alunosEnderecoConvertion(alunosenderecoaux, alunos);
         enderecoRepository.persistAndFlush(endereco);
     }
 
@@ -61,10 +61,10 @@ public class DefaultAlunosEnderecoService implements AlunosEnderecoService {
         aluno = alunosRepository.findByIdOptional(id)
                 .orElseThrow(() -> new MenssageNotFoundException("There Aluno doesn't exist"));
         List<AlunosEndereco> endereco = enderecoRepository.findByAlunos(aluno);
-        
-        for(int x=0; x < endereco.size(); x++){
+
+        for (int x = 0; x < endereco.size(); x++) {
             enderecoRepository.delete(endereco.get(x));
         }
     }
-    
+
 }

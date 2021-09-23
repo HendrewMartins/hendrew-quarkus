@@ -9,11 +9,10 @@ import br.hendrew.quarkus.entity.Bimestre;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
-public class BimestreRepository implements PanacheRepository<Bimestre>{
-	
-	public List<Bimestre> findByAlunos(Alunos alunos){
-	       return list("alunos", alunos);
-	   }
+public class BimestreRepository implements PanacheRepository<Bimestre> {
 
+	public List<Bimestre> findByAlunos(Alunos alunos) {
+		return list("alunos", alunos);
+	}
 
 }

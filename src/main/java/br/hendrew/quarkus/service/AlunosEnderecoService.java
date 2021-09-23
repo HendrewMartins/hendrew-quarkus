@@ -10,9 +10,8 @@ public interface AlunosEnderecoService {
 
     List<AlunosEndereco_Auxiliar> getEnderecoPorAluno(long id) throws MenssageNotFoundException;
 
-    void saveEndereco(AlunosEndereco_Auxiliar alunosenderecoaux, Alunos alunos)
-            throws MenssageNotFoundException;
+    void saveEndereco(AlunosEndereco_Auxiliar alunosenderecoaux, Alunos alunos) throws MenssageNotFoundException;
 
-    void deleteEnderecoAluno(long id) throws MenssageNotFoundException;        
+    void deleteEnderecoAluno(long id) throws MenssageNotFoundException;
 
 }

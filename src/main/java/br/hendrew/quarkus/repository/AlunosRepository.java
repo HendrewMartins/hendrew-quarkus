@@ -11,6 +11,6 @@ import io.quarkus.panache.common.Parameters;
 public class AlunosRepository implements PanacheRepository<Alunos> {
 
     public List<Alunos> findByNome(String nome) {
-        return find("lower(nome) like lower(:nome)", Parameters.with("nome", "%"+nome+"%")).list();
+        return find("lower(nome) like lower(:nome)", Parameters.with("nome", "%" + nome + "%")).list();
     }
 }

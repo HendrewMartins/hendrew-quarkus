@@ -11,8 +11,7 @@ public class Nota_Auxiliar {
 	private String desc_avaliacao;
 	private String desc_bimestre;
 	private String desc_aluno;
-	
-	
+
 	public String getDesc_avaliacao() {
 		return desc_avaliacao;
 	}
@@ -39,7 +38,7 @@ public class Nota_Auxiliar {
 
 	public Nota_Auxiliar() {
 	}
-    
+
 	public long getId() {
 		return id;
 	}
@@ -55,10 +54,11 @@ public class Nota_Auxiliar {
 	public void setId_Avaliacao(long id_Avaliacao) {
 		this.id_Avaliacao = id_Avaliacao;
 	}
-		
+
 	public double getNotas() {
 		return notas;
 	}
+
 	public void setNotas(double notas) {
 		this.notas = notas;
 	}

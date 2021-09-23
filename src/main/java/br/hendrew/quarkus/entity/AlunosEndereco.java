@@ -11,17 +11,16 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 
-
 @Entity
 @Table(name = "alunos_endereco")
-public class AlunosEndereco implements Serializable{
-    
+public class AlunosEndereco implements Serializable {
+
     @Id
     private long sequencia;
 
     @Id
     @ManyToOne
-	@JoinColumn(name="id_aluno")
+    @JoinColumn(name = "id_aluno")
     private Alunos aluno;
 
     @Column(name = "tipo", nullable = false)
@@ -43,7 +42,7 @@ public class AlunosEndereco implements Serializable{
     @Size(max = 50)
     private String bairro;
 
-    @Column(name="complemento", nullable = false)
+    @Column(name = "complemento", nullable = false)
     @Size(max = 100)
     private String complemento;
 
@@ -114,14 +113,11 @@ public class AlunosEndereco implements Serializable{
         this.complemento = complemento;
     }
 
-   
     @Override
     public String toString() {
         return "AlunosEndereco [bairro=" + bairro + ", cep=" + cep + ", complemento=" + complemento + ", alunos="
-                + aluno + ", logradouro=" + logradouro + ", numero=" + numero + ", sequencia=" + sequencia
-                + ", tipo=" + tipo + "]";
+                + aluno + ", logradouro=" + logradouro + ", numero=" + numero + ", sequencia=" + sequencia + ", tipo="
+                + tipo + "]";
     }
-
-
 
 }

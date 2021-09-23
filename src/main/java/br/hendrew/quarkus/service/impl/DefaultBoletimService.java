@@ -33,7 +33,7 @@ public class DefaultBoletimService implements BoletimService {
 	@Inject
 	private AvaliacaoService serviceavaliacao;
 
-    @Override
+	@Override
 	public List<Boletim> buscarboletim(Long ano) throws MenssageNotFoundException {
 		List<Boletim> lista = new ArrayList<Boletim>();
 		List<Alunos> alunos = servicealunos.getAllAlunos();
@@ -123,7 +123,5 @@ public class DefaultBoletimService implements BoletimService {
 		}
 		return lista;
 	}
-
-
 
 }

@@ -37,52 +37,65 @@ import br.hendrew.quarkus.service.NotaService;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class NotaController {
-	
-	private final NotaService notaService;
+
+    private final NotaService notaService;
     private final BimestreService bimestreService;
     private final AvaliacaoService avaliacaoService;
 
-	@Inject
-    public NotaController(NotaService notaService, BimestreService bimestreService, 
-                          AvaliacaoService avaliacaoService) {
+    @Inject
+    public NotaController(NotaService notaService, BimestreService bimestreService, AvaliacaoService avaliacaoService) {
         this.notaService = notaService;
         this.bimestreService = bimestreService;
         this.avaliacaoService = avaliacaoService;
     }
- 
+
     @GET
- 	@PermitAll
+    @PermitAll
     @Operation(summary = "Listar Notas", description = "Lista todas Notas")
-    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))))
+    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))))
     public List<Nota_Auxiliar> getNota() {
         return notaService.getAllNotaDescricao();
     }
- 
+
     @GET
-  	@PermitAll
+    @PermitAll
+    @Path("/page/{page}")
+    @Operation(summary = "Listar Notas", description = "Lista todas Notas")
+    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))))
+    public List<Nota_Auxiliar> getNotaPage(@PathParam("page") int pagina) throws MenssageNotFoundException {
+        return notaService.getAllNotaDescricaoPage(pagina, 5);
+    }
+
+    @GET
+    @PermitAll
     @Path("/id/{id}")
     @Operation(summary = "Pegar Nota", description = "Pesquisa por um ID a Nota")
     @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "Success",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))),
-            @APIResponse(responseCode = "404", description="Nota not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-    })
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))),
+            @APIResponse(responseCode = "404", description = "Nota not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
     public Nota_Angular getNota(@PathParam("id") int id) throws MenssageNotFoundException {
         return notaService.getNotaAngById(id);
+    }
+
+    @GET
+    @PermitAll
+    @Path("/count")
+    @Operation(summary = "Pegar Quantidade das Notas", description = "Quantidade Repository Notas")
+    @APIResponses(value = {
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Long.class))),
+            @APIResponse(responseCode = "404", description = "Notas not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
+    public long getQuantidade() throws MenssageNotFoundException {
+        return notaService.countNotas();
     }
 
     @POST
     @PermitAll
     @Path("/save")
     @Operation(summary = "Adiconar a Nota", description = "Create um Nota e persists no database")
-    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))))
+    @APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))))
     public Nota createNota(@Valid NotaDto notaDto) throws MenssageNotFoundException {
-        return notaService.saveNota(notaDto.toNota(), 
-        bimestreService.getBimestreById(notaDto.getId_Bimestre()), 
-        avaliacaoService.getAvaliacaoById(notaDto.getId_Avaliacao()));
+        return notaService.saveNota(notaDto.toNota(), bimestreService.getBimestreById(notaDto.getId_Bimestre()),
+                avaliacaoService.getAvaliacaoById(notaDto.getId_Avaliacao()));
     }
 
     @PUT
@@ -90,59 +103,47 @@ public class NotaController {
     @Path("/edit/{id}")
     @Operation(summary = "Atualizar uma Nota", description = "Atualizar um Nota existente via id")
     @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "Success",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))),
-            @APIResponse(responseCode = "404", description="Nota not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-    })
+            @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nota.class))),
+            @APIResponse(responseCode = "404", description = "Nota not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
     public Nota updateNota(@PathParam("id") int id, @Valid NotaDto notaDto) throws MenssageNotFoundException {
-        return notaService.updateNota(id, notaDto.toNota(), 
-        bimestreService.getBimestreById(notaDto.getId_Bimestre()), 
-        avaliacaoService.getAvaliacaoById(notaDto.getId_Avaliacao()));
+        return notaService.updateNota(id, notaDto.toNota(), bimestreService.getBimestreById(notaDto.getId_Bimestre()),
+                avaliacaoService.getAvaliacaoById(notaDto.getId_Avaliacao()));
     }
 
     @DELETE
     @PermitAll
     @Path("/delete/{id}")
     @Operation(summary = "Apagar Nota", description = "Deletar uma Nota pelo ID")
-    @APIResponses(value = {
-            @APIResponse(responseCode = "204", description = "Success"),
-            @APIResponse(responseCode = "404", description="Nota not found",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class)))
-    })
+    @APIResponses(value = { @APIResponse(responseCode = "204", description = "Success"),
+            @APIResponse(responseCode = "404", description = "Nota not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionHandler.ErrorResponseBody.class))) })
     public boolean deleteNota(@PathParam("id") int id) throws MenssageNotFoundException {
         notaService.deleteNota(id);
         return true;
     }
 
-    @Schema(name="NotaDTO", description="DTO para Criar um novo Nota")
+    @Schema(name = "NotaDTO", description = "DTO para Criar um novo Nota")
     public static class NotaDto {
 
-        
         @Schema(title = "id_Avaliacao", required = true)
         private long id_Avaliacao;
-        
-        
+
         @Schema(title = "nota", required = true)
         private double nota;
-    	
-        
+
         @Schema(title = "id_Bimestre", required = true)
         private long id_Bimestre;
 
-        
         @Schema(title = "id_Aluno", required = true)
         private Alunos id_Aluno;
-        
 
         public long getId_Avaliacao() {
             return id_Avaliacao;
         }
 
         public void setId_Avaliacao(long id_Avaliacao) {
-            this.id_Avaliacao= id_Avaliacao;
+            this.id_Avaliacao = id_Avaliacao;
         }
-        
+
         public double getNota() {
             return nota;
         }
@@ -150,7 +151,7 @@ public class NotaController {
         public void setNota(double nota) {
             this.nota = nota;
         }
-        
+
         public long getId_Bimestre() {
             return id_Bimestre;
         }
@@ -166,15 +167,14 @@ public class NotaController {
         public void setId_Aluno(Alunos id_Aluno) {
             this.id_Aluno = id_Aluno;
         }
-               
+
         public Nota_Angular toNota() {
-        	Nota_Angular nota = new Nota_Angular();
+            Nota_Angular nota = new Nota_Angular();
             nota.setId_Avaliacao(this.id_Avaliacao);
             nota.setId_Bimestre(this.id_Bimestre);
             nota.setNota(this.nota);
             return nota;
         }
     }
-
 
 }

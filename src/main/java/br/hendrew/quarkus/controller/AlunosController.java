@@ -237,7 +237,6 @@ public class AlunosController {
 	@POST
 	@PermitAll
 	@Consumes("multipart/form-data")
-	@Produces(MediaType.TEXT_PLAIN)
 	@Path("/importar")
 	@Operation(summary = "Adicionar alunos", description = "Criar um novo aluno e persistir no banco")
 	@APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MultipartForm.class))))

@@ -1,5 +1,11 @@
 package br.hendrew.quarkus.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,13 +24,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.reflect.TypeToken;
+
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
+import br.hendrew.quarkus.DTO.AlunosImportDTO;
 import br.hendrew.quarkus.entity.Alunos;
 import br.hendrew.quarkus.entity.AlunosEndereco_Auxiliar;
 import br.hendrew.quarkus.entity.AlunosTelefone_Auxiliar;
@@ -219,6 +232,95 @@ public class AlunosController {
 		aluno_aux.setRg_aluno(aluno.getRg_aluno());
 
 		return aluno_aux;
+	}
+
+	@POST
+	@PermitAll
+	@Consumes("multipart/form-data")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/importar")
+	@Operation(summary = "Adicionar alunos", description = "Criar um novo aluno e persistir no banco")
+	@APIResponses(value = @APIResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MultipartForm.class))))
+	public List<Alunos_Auxiliar> importarAluno(@MultipartForm File imp) throws IOException {
+
+		System.out.println();
+
+		FileReader arq;
+		BufferedReader lerArq;
+		String linha = "";
+		String arquivo = "";
+		Boolean begin = false;
+		Boolean end = false;
+		try {
+			arq = new FileReader(imp);
+			lerArq = new BufferedReader(arq);
+			linha = lerArq.readLine();
+
+			while (linha != null) {
+
+				int posicao_inicio = linha.indexOf('[');
+				int posicao_fim = linha.indexOf(']');
+				if (begin == false) {
+					if (posicao_inicio >= 0) {
+						begin = true;
+						if (posicao_fim >= 0) {
+							arquivo = arquivo + linha.substring(posicao_inicio, posicao_fim + 1);
+							end = true;
+						} else {
+							arquivo = arquivo + linha.substring(posicao_inicio);
+						}
+					}
+				} else {
+					if ((linha != null) && (begin == true) && (end == false)) {
+						if (posicao_fim >= 0) {
+							arquivo = arquivo + linha.substring(0, posicao_fim + 1);
+							end = true;
+						} else {
+							arquivo = arquivo + linha;
+						}
+
+					}
+				}
+				// lê da segunda até a última linha
+				linha = lerArq.readLine();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		List<AlunosImportDTO> importDto = new ArrayList<AlunosImportDTO>();
+
+		try {
+			Type listType = new TypeToken<ArrayList<AlunosImportDTO>>(){}.getType();
+			GsonBuilder builder = new GsonBuilder();
+			builder.setPrettyPrinting();
+			Gson gson = builder.create();
+			importDto = gson.fromJson(arquivo, listType);
+		} catch (JsonIOException err) {
+			System.out.println("Exception : " + err.toString());
+		}
+		
+		List<Alunos_Auxiliar> aux = new ArrayList<Alunos_Auxiliar>();
+
+		for (int i = 0; i < importDto.size(); i++) {
+			System.out.println(i);
+			Alunos aluno = alunosService.saveAlunos(importDto.get(i).toAlunoImportDTO());
+			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+			Alunos_Auxiliar aluno_auxiliar = new Alunos_Auxiliar();
+
+			aluno_auxiliar.setId(aluno.getId());
+			aluno_auxiliar.setNome(aluno.getNome());
+			aluno_auxiliar.setDt_nasc(formatador.format(aluno.getDt_nasc()));
+			aluno_auxiliar.setCpf(aluno.getCpf());
+			aluno_auxiliar.setMatricula(aluno.getMatricula());
+			aluno_auxiliar.setNm_mae(aluno.getNm_mae());
+			aluno_auxiliar.setNm_pai(aluno.getNm_pai());
+			aluno_auxiliar.setRg_aluno(aluno.getRg_aluno());
+
+			aux.add(i, aluno_auxiliar);
+
+		}
+		System.out.println("fim");
+		return aux;
 	}
 
 	@PUT

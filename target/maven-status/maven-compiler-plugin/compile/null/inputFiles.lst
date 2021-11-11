@@ -7,6 +7,7 @@ C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\enti
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\entity\Bimestre_Auxiliar.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\convertion\NotaConvertion.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\controller\BoletimController.java
+C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\DTO\AlunosImportDTO.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\repository\AlunosEnderecoRepository.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\service\AlunosTelefoneService.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\service\impl\DefaultAlunosTelefoneService.java
@@ -16,7 +17,6 @@ C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\conf
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\repository\AlunosRepository.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\controller\NotaController.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\convertion\BimestreConvertion.java
-C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\controller\AlunosEnderecoController.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\service\AvaliacaoService.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\service\impl\DefaultNotaService.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\entity\Alunos_Auxiliar.java
@@ -47,4 +47,3 @@ C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\conv
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\exceptionhandler\ExceptionHandler.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\repository\AvaliacaoRepository.java
 C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\convertion\AlunosEnderecoConvertion.java
-C:\Angular\hendrew_quarkus\hendrew-quarkus\src\main\java\br\hendrew\quarkus\controller\AlunosTelefoneController.java
